@@ -93,8 +93,20 @@ export const GAMES = [
     spice: 1,
     meta: ['👥 2–10', '🎶 Music'],
   },
-
-  // -------- on the workbench --------
+  {
+    id: 'hil',
+    title: 'Hil Mat!',
+    tagline: "Tilt together. Don't drop it.",
+    description: 'Everyone tilts their phone to steer ONE wobbly platform — keep the cargo (laddoos, chai, donuts…) from sliding off and deliver it. A co-op tilt challenge for the whole room.',
+    icon: '📲',
+    accent: '#ffb000',
+    accent2: '#06d6a0',
+    gfx: 'tilt',
+    status: 'live',
+    path: '/hil/host',
+    spice: 2,
+    meta: ['👥 2–10', '🤝 Co-op', '📲 Tilt'],
+  },
   {
     id: 'doodle',
     title: 'Doodle',

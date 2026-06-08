@@ -1,0 +1,22 @@
+/* Hil Mat host */
+.mute-btn { position: fixed; top: 14px; right: 14px; z-index: 50; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-size: 1.3rem; background: var(--glass); border: 1px solid var(--glass-line); color: #fff; backdrop-filter: blur(8px); }
+
+.hil-hud { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 900px; font-family: 'Baloo 2'; font-weight: 700; font-size: clamp(1.1rem, 2.6vw, 1.7rem); }
+.hil-hud .remaining { color: var(--yellow); }
+
+.stage {
+  width: min(90vw, 900px); height: min(52vh, 460px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.18));
+  border-radius: 22px; border: 1px solid var(--glass-line); box-shadow: var(--shadow);
+  display: block; margin: 0.8rem auto;
+}
+.progress-track { width: min(90vw, 900px); height: 16px; border-radius: 999px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-line); overflow: hidden; margin: 0 auto; }
+.progress-fill { height: 100%; width: 0%; border-radius: 999px; background: linear-gradient(90deg, var(--lime), var(--cyan)); transition: width 0.1s linear; }
+
+.bump-flash {
+  position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%);
+  font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(2rem, 7vw, 4rem); color: var(--hot);
+  text-shadow: 0 4px 18px rgba(0,0,0,0.6); z-index: 40; pointer-events: none;
+  animation: pop-in 0.25s both;
+}
+.big-result { font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(1.6rem, 5vw, 3rem); text-align: center; margin: 0.4rem 0 1rem; }

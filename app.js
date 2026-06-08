@@ -155,6 +155,16 @@ function surSVG() {
   return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${GLOW}${r}</svg>`;
 }
 
+// Hil Mat: a tilted platform on a pivot with cargo balanced on top.
+function hilSVG() {
+  let r = `<rect x="96" y="92" width="8" height="42" rx="3" fill="rgba(255,255,255,0.18)"/>`;
+  r += `<g transform="rotate(-13 100 92)">`;
+  r += `<rect x="36" y="86" width="128" height="13" rx="6" fill="var(--accent)" filter="url(#g)"/>`;
+  [62, 86, 110, 134].forEach((x) => { r += `<circle cx="${x}" cy="77" r="9" fill="var(--accent2)"/>`; });
+  r += `</g>`;
+  return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${GLOW}${r}</svg>`;
+}
+
 function artFor(g) {
   switch (g.gfx) {
     case 'wordboard': return wordBoardSVG();
@@ -164,6 +174,7 @@ function artFor(g) {
     case 'spectrum': return spectrumSVG();
     case 'fill': return fillSVG();
     case 'sur': return surSVG();
+    case 'tilt': return hilSVG();
     default: return patternSVG();
   }
 }

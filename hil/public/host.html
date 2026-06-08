@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hil Mat! — Host</title>
+  <link rel="stylesheet" href="/shared/theme.css" />
+  <link rel="stylesheet" href="/shared/lobby.css" />
+  <link rel="stylesheet" href="skin.css" />
+  <link rel="stylesheet" href="host.css" />
+  <script type="module" src="/shared/boot.js"></script>
+</head>
+<body>
+  <a class="home-btn" href="/" title="Tadka Play home" aria-label="Home">🏠</a>
+  <button class="mute-btn" id="muteBtn" title="Mute">🔊</button>
+
+  <!-- LOBBY -->
+  <section id="screen-lobby" class="screen">
+    <header class="brand">
+      <h1 class="display"><span class="title-gradient">HIL MAT!</span></h1>
+      <p class="tagline">Tilt together. Don't drop it. 📲</p>
+    </header>
+    <div id="preStart" class="center-stack">
+      <button class="btn cyan big-start" id="createBtn">Start a Game ▶</button>
+    </div>
+    <div id="lobbyBody" class="lobby hidden">
+      <div class="join-panel glass">
+        <h2>Join on your phone</h2>
+        <div class="qr-wrap"><img id="qrImg" alt="Join QR code" /></div>
+        <div class="join-info">
+          <div class="join-url" id="joinUrl"></div>
+          <div class="room-code"><span class="rc-label">ROOM CODE</span><span class="rc-code" id="roomCode">----</span></div>
+        </div>
+      </div>
+      <div class="players-panel">
+        <div class="players-head">
+          <h2>Players <span class="count-badge" id="playerCount">0</span></h2>
+          <button class="btn green" id="startGameBtn" disabled>Start ▶</button>
+        </div>
+        <div>
+          <div class="round-badge" style="margin-bottom:.6rem;display:inline-block">Pick your cargo</div>
+          <div class="packs" id="packs"></div>
+        </div>
+        <div class="player-grid" id="lobbyPlayers"></div>
+        <p class="empty-hint" id="emptyHint">Waiting for players to join…</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAY -->
+  <section id="screen-play" class="screen hidden">
+    <div class="hil-hud">
+      <div class="goal">🛺 Deliver to <b id="goalName">home</b></div>
+      <div class="remaining" id="remaining"></div>
+    </div>
+    <canvas id="stage" class="stage"></canvas>
+    <div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
+    <div class="bump-flash hidden" id="bumpFlash">POTHOLE! 🕳️</div>
+    <p class="status-line">📲 Everyone, tilt your phones to keep it steady!</p>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="screen-results" class="screen hidden">
+    <h1 class="display results-title" id="resultTitle"><span class="title-gradient">RESULTS</span></h1>
+    <div class="big-result" id="bigResult"></div>
+    <div class="scoreboard" id="scoreboard"></div>
+    <button class="btn cyan" id="playAgainBtn" style="margin-top:1.4rem">Try Again ↻</button>
+  </section>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="host.js"></script>
+</body>
+</html>

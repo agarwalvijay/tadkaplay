@@ -18,6 +18,7 @@ import { mountCrorepati } from './crorepati/mount.js';
 import { mountAndaaza } from './andaaza/mount.js';
 import { mountFill } from './fill/mount.js';
 import { mountSur } from './sur/mount.js';
+import { mountHil } from './hil/mount.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 8080;
@@ -37,6 +38,7 @@ mountCrorepati(app, io, { port: PORT });
 mountAndaaza(app, io, { port: PORT });
 mountFill(app, io, { port: PORT });
 mountSur(app, io, { port: PORT });
+mountHil(app, io, { port: PORT });
 
 // ---- legal pages (clean URLs) ----
 app.get('/privacy', (_q, r) => r.sendFile(join(__dirname, 'privacy.html')));
