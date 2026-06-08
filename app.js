@@ -132,6 +132,17 @@ function spectrumSVG() {
   return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${defs}${r}</svg>`;
 }
 
+// Khaali Jagah: an answer card with a highlighted blank + a vote star.
+function fillSVG() {
+  let r = `<rect x="22" y="38" width="156" height="84" rx="14" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.14)"/>`;
+  r += `<rect x="38" y="58" width="90" height="9" rx="4.5" fill="rgba(255,255,255,0.22)"/>`;
+  r += `<rect x="38" y="80" width="58" height="12" rx="6" fill="var(--accent)" filter="url(#g)"/>`;
+  r += `<rect x="104" y="80" width="38" height="9" rx="4.5" fill="rgba(255,255,255,0.22)"/>`;
+  r += `<rect x="38" y="102" width="108" height="9" rx="4.5" fill="rgba(255,255,255,0.18)"/>`;
+  r += `<text x="150" y="52" font-size="26">⭐</text>`;
+  return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${GLOW}${r}</svg>`;
+}
+
 function artFor(g) {
   switch (g.gfx) {
     case 'wordboard': return wordBoardSVG();
@@ -139,6 +150,7 @@ function artFor(g) {
     case 'doodle': return doodleSVG();
     case 'crorepati': return crorepatiSVG();
     case 'spectrum': return spectrumSVG();
+    case 'fill': return fillSVG();
     default: return patternSVG();
   }
 }

@@ -16,6 +16,7 @@ import { mountBluff } from './bluff/mount.js';
 import { mountDoodle } from './doodle/mount.js';
 import { mountCrorepati } from './crorepati/mount.js';
 import { mountAndaaza } from './andaaza/mount.js';
+import { mountFill } from './fill/mount.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 8080;
@@ -33,6 +34,7 @@ mountBluff(app, io, { port: PORT });
 mountDoodle(app, io, { port: PORT });
 mountCrorepati(app, io, { port: PORT });
 mountAndaaza(app, io, { port: PORT });
+mountFill(app, io, { port: PORT });
 
 // ---- legal pages (clean URLs) ----
 app.get('/privacy', (_q, r) => r.sendFile(join(__dirname, 'privacy.html')));

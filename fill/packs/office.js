@@ -1,0 +1,20 @@
+export default {
+  id: 'office',
+  name: 'Office',
+  emoji: '💼',
+  accent: '#06d6a0',
+  spice: 1,
+  description: 'Corporate chaos, for the work crew.',
+  prompts: [
+    'This meeting could have been ____.',
+    'The real reason I joined the call on mute: ____.',
+    '"Per my last email" actually means ____.',
+    'The office fridge smells like ____.',
+    'My out-of-office reply should just say ____.',
+    'Nothing kills morale like ____.',
+    'The secret to looking busy is ____.',
+    'I would quit on the spot if my boss said ____.',
+    'The worst icebreaker question: ____.',
+    'Our company "culture" is basically ____.',
+  ],
+};

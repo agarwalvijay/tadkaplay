@@ -1,0 +1,15 @@
+/* Khaali Jagah host — on top of theme.css + lobby.css */
+.mute-btn {
+  position: fixed; top: 14px; right: 14px; z-index: 50;
+  width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 1.3rem;
+  background: var(--glass); border: 1px solid var(--glass-line); color: #fff; backdrop-filter: blur(8px);
+}
+.prompt .blank {
+  color: var(--yellow); border-bottom: 4px solid var(--yellow);
+  padding: 0 0.3em; margin: 0 0.1em; letter-spacing: 2px;
+}
+.opt .opt-meta .tag { padding: 0.15rem 0.55rem; border-radius: 999px; background: rgba(0,0,0,0.3); font-weight: 700; }
+.opt.fav { box-shadow: 0 0 0 3px var(--yellow) inset; background: rgba(255,210,63,0.14); }
+.opt .count { font-family: 'Baloo 2'; font-weight: 800; color: var(--yellow); }
+.opt .who { font-size: 0.85rem; opacity: 0.75; }

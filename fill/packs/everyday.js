@@ -1,0 +1,22 @@
+export default {
+  id: 'everyday',
+  name: 'Everyday',
+  emoji: '🙃',
+  accent: '#4cc9f0',
+  spice: 1,
+  description: 'Relatable, slightly unhinged.',
+  prompts: [
+    'The worst thing to say on a first date: ____.',
+    'My search history is just ____.',
+    '____ should honestly be illegal.',
+    'The real reason I was late: ____.',
+    'In my next life, I want to be ____.',
+    'The group chat went silent after someone said ____.',
+    'My villain origin story started with ____.',
+    'Nothing is scarier than ____.',
+    'I would absolutely cancel plans for ____.',
+    'The most useless superpower: ____.',
+    'You can tell a lot about a person by their ____.',
+    'My toxic trait is ____.',
+  ],
+};

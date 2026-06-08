@@ -65,6 +65,20 @@ export const GAMES = [
     spice: 2,
     meta: ['👥 3–10', '🎯 Guessing'],
   },
+  {
+    id: 'fill',
+    title: 'Khaali Jagah',
+    tagline: 'Fill in the blank. Win the room.',
+    description: 'Everyone fills the blank in a prompt with something funny; then the whole room votes for the favourite. Most votes wins the points.',
+    icon: '✍️',
+    accent: '#ff006e',
+    accent2: '#ff8c42',
+    gfx: 'fill',
+    status: 'live',
+    path: '/fill/host',
+    spice: 2,
+    meta: ['👥 3–10', '😂 Party'],
+  },
 
   // -------- on the workbench --------
   {
