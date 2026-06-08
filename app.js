@@ -229,6 +229,26 @@ const liveCount = GAMES.filter((g) => g.status === 'live').length;
 document.getElementById('footCount').textContent =
   `${liveCount} game${liveCount === 1 ? '' : 's'} ready to play`;
 
+// ---- "rejoin your game" banner -----------------------------------------
+// If you left a live game (hit Home / refreshed), offer a one-tap way back in.
+(() => {
+  let sess; try { sess = JSON.parse(localStorage.getItem('tadka_session') || 'null'); } catch { sess = null; }
+  if (!sess || !sess.game || !sess.code) return;
+  if (Date.now() - (sess.at || 0) > 30 * 60 * 1000) { localStorage.removeItem('tadka_session'); return; }
+  const game = GAMES.find((g) => g.path === `${sess.game}/host`) || {};
+  const bar = document.createElement('div');
+  bar.className = 'rejoin-banner';
+  bar.innerHTML = `
+    <a class="rj-link" href="${sess.game}/play?room=${encodeURIComponent(sess.code)}">
+      <span class="rj-emoji">${game.icon || '🎮'}</span>
+      <span class="rj-text">Rejoin your game${game.title ? ` — <b>${game.title}</b>` : ''} <span class="rj-code">${sess.code}</span></span>
+      <span class="rj-go">Rejoin ↪</span>
+    </a>
+    <button class="rj-x" title="Dismiss" aria-label="Dismiss">✕</button>`;
+  bar.querySelector('.rj-x').onclick = () => { localStorage.removeItem('tadka_session'); bar.remove(); };
+  document.body.appendChild(bar);
+})();
+
 // ---- rising embers + popping spices -----------------------------------
 const emberColors = ['var(--saffron)', 'var(--chili)', 'var(--turmeric)', 'var(--paprika)'];
 const spiceGlyphs = ['🌶️', '✨', '⭐', '🟡'];

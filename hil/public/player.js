@@ -24,6 +24,9 @@ if (params.get('room')) $('codeInput').value = params.get('room').toUpperCase();
 let myId = null, myName = '', ready = false, joinedCode = null;
 socket.on('connect', () => { if (joinedCode) socket.emit('player:join', { code: joinedCode, name: myName, avatar, playerId: myId }); });
 const saved = (() => { try { return JSON.parse(localStorage.getItem('hil_player') || '{}'); } catch { return {}; } })();
+// auto-rejoin after an accidental refresh (the play URL keeps ?room=CODE)
+const reCode = (params.get('room') || '').toUpperCase();
+if (reCode && saved.playerId) { myId = saved.playerId; myName = saved.name || ''; if (saved.avatar) avatar = saved.avatar; joinedCode = reCode; }
 const showErr = (m) => { const e = $('joinError'); e.textContent = m; e.classList.remove('hidden'); };
 
 $('joinBtn').onclick = () => {
@@ -36,6 +39,7 @@ socket.on('player:joinError', () => showErr('Room not found — check the code.'
 socket.on('player:joined', ({ id, code, name, avatar: av, spectator }) => {
   myId = id; myName = name; joinedCode = code;
   try { localStorage.setItem('hil_player', JSON.stringify({ playerId: id, name, avatar })); } catch {}
+  try { localStorage.setItem('tadka_session', JSON.stringify({ game: NS, code, playerId: id, name, at: Date.now() })); } catch {}
   $('waitAvatar').textContent = av.emoji; $('waitAvatar').style.background = `radial-gradient(circle at 30% 25%, #ffffff66, ${av.color})`;
   $('waitName').textContent = name; $('spectatorNote').classList.toggle('hidden', !spectator);
   show('wait'); window.ttrack?.('player_joined');

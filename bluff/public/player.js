@@ -53,6 +53,9 @@ socket.on('connect', () => {
 });
 
 const saved = (() => { try { return JSON.parse(localStorage.getItem('bluff_player') || '{}'); } catch { return {}; } })();
+// auto-rejoin after an accidental refresh (the play URL keeps ?room=CODE)
+const reCode = (params.get('room') || '').toUpperCase();
+if (reCode && saved.playerId) { myId = saved.playerId; myName = saved.name || ''; if (saved.avatar) avatar = saved.avatar; joinedCode = reCode; }
 
 function showErr(m) { const e = $('joinError'); e.textContent = m; e.classList.remove('hidden'); }
 
@@ -68,6 +71,7 @@ socket.on('player:joinError', () => showErr('Room not found — check the code.'
 socket.on('player:joined', ({ id, code, name, avatar: av, spectator }) => {
   myId = id; myName = name; joinedCode = code;
   try { localStorage.setItem('bluff_player', JSON.stringify({ playerId: id, name, avatar })); } catch {}
+  try { localStorage.setItem('tadka_session', JSON.stringify({ game: NS, code, playerId: id, name, at: Date.now() })); } catch {}
   $('waitAvatar').textContent = av.emoji;
   $('waitAvatar').style.background = `radial-gradient(circle at 30% 25%, #ffffff66, ${av.color})`;
   $('waitName').textContent = name;

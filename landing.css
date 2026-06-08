@@ -393,6 +393,36 @@ body {
 .foot a { color: rgba(255, 244, 232, 0.72); text-decoration: none; }
 .foot a:hover { color: var(--turmeric); text-decoration: underline; }
 
+/* ---- "rejoin your game" banner ---- */
+.rejoin-banner {
+  position: fixed; left: 50%; top: max(12px, env(safe-area-inset-top)); transform: translateX(-50%);
+  z-index: 200; display: flex; align-items: center; gap: 0.3rem;
+  max-width: calc(100vw - 24px);
+  background: linear-gradient(100deg, var(--saffron), var(--chili));
+  border-radius: 999px; padding: 0.3rem 0.5rem 0.3rem 0.3rem;
+  box-shadow: 0 10px 30px -8px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.15) inset;
+  animation: rj-drop 0.5s cubic-bezier(.2,.9,.3,1.2) both;
+}
+@keyframes rj-drop { from { opacity: 0; transform: translate(-50%, -24px); } to { opacity: 1; transform: translate(-50%, 0); } }
+.rejoin-banner .rj-link {
+  display: flex; align-items: center; gap: 0.6rem; min-width: 0;
+  text-decoration: none; color: #1a0d00; font-family: 'Fredoka', sans-serif; font-weight: 600;
+  padding: 0.3rem 0.5rem;
+}
+.rejoin-banner .rj-emoji { font-size: 1.4rem; flex: none; }
+.rejoin-banner .rj-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.95rem; }
+.rejoin-banner .rj-code { font-family: 'Baloo 2', sans-serif; font-weight: 800; letter-spacing: 0.12em; }
+.rejoin-banner .rj-go {
+  flex: none; background: rgba(0,0,0,0.28); color: #fff; font-weight: 700;
+  padding: 0.35rem 0.7rem; border-radius: 999px; font-size: 0.9rem;
+}
+.rejoin-banner .rj-x {
+  flex: none; width: 30px; height: 30px; border-radius: 50%; border: none;
+  background: rgba(0,0,0,0.2); color: #1a0d00; font-size: 0.9rem; cursor: pointer;
+}
+.rejoin-banner .rj-x:hover { background: rgba(0,0,0,0.35); color: #fff; }
+@media (max-width: 480px) { .rejoin-banner .rj-go { display: none; } }
+
 /* ---- motion-safety ---- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

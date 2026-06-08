@@ -47,6 +47,15 @@ try {
   if (saved.name) $('nameInput').value = saved.name;
   if (saved.avatar) state.avatar = saved.avatar;
 } catch {}
+// auto-rejoin after an accidental refresh (the play URL keeps ?room=CODE)
+{
+  const reCode = (params.get('room') || '').toUpperCase();
+  const rePid = sessionStorage.getItem('wc_pid');
+  if (reCode && rePid) {
+    state.myId = rePid; state.joinedCode = reCode;
+    try { const s = JSON.parse(localStorage.getItem('wc_profile') || '{}'); state.myName = s.name || ''; if (s.avatar) state.avatar = s.avatar; } catch {}
+  }
+}
 // no default name — leave the field empty (placeholder). If left blank at
 // join, a random name is used (see joinBtn handler).
 
@@ -125,6 +134,7 @@ socket.on('player:joined', ({ id, code, name, avatar, state: gameState, spectato
   state.spectator = spectator;
   window.ttrack?.('player_joined');
   sessionStorage.setItem('wc_pid', id);
+  try { localStorage.setItem('tadka_session', JSON.stringify({ game: '/wordcombos', code, playerId: id, name, at: Date.now() })); } catch {}
   styleAvatar($('waitAvatar'), avatar);
   $('waitName').textContent = name;
   styleAvatar($('resultAvatar'), avatar);
