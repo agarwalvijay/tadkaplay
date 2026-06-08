@@ -107,6 +107,12 @@ export function mountCrorepati(app, io, { port }) {
 
   gs.onReset((room) => { clearTimer(room); room.game.cur = null; room.game.roundIndex = -1; room.game.screen = null; });
 
+  // a player leaving shouldn't hold up the question
+  gs.onDisconnect((room, _player, api) => {
+    const cur = room.game.cur;
+    if (cur && cur.phase === 'answer' && cur.answers.size >= api.activePlayers().length) closeQuestion(room, api);
+  });
+
   gs.handle('kbc:answer', (api) => {
     const { room, player, payload, ack } = api;
     const cur = room.game.cur;

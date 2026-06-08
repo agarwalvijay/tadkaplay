@@ -57,6 +57,7 @@ export class GameServer {
       onStart: () => {},
       onReset: () => {},
       onClose: () => {},
+      onDisconnect: () => {},
       ...opts,
     };
     this.basePath = opts.basePath;
@@ -71,6 +72,7 @@ export class GameServer {
   // --- game registration -------------------------------------------------
   onStart(fn) { this.opts.onStart = fn; return this; }
   onReset(fn) { this.opts.onReset = fn; return this; }
+  onDisconnect(fn) { this.opts.onDisconnect = fn; return this; }
   handle(event, fn) { this.handlers[event] = fn; return this; }
 
   // --- helpers a game gets via `api` ------------------------------------
@@ -266,7 +268,12 @@ export class GameServer {
           return;
         }
         const player = room.players.get(socket.data.playerKey);
-        if (player) { player.connected = false; this.broadcastPlayers(room); }
+        if (player) {
+          player.connected = false;
+          this.broadcastPlayers(room);
+          // let the game advance immediately if this player was holding up a round
+          this.opts.onDisconnect(room, player, this._api(room));
+        }
       });
     });
   }

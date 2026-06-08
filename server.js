@@ -21,7 +21,10 @@ const PORT = process.env.PORT || 8080;
 
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer);
+// Heartbeat: the server pings every 2s and expects a pong within 5s. A device
+// that hasn't checked in is considered gone in ~5s (so it can't hold up a
+// round), and the client auto-reconnects + resyncs when it comes back.
+const io = new Server(httpServer, { pingInterval: 2000, pingTimeout: 5000 });
 
 // ---- mounted games (URL prefix + socket namespace each) ----
 mountWordCombos(app, io, { basePath: '/wordcombos', port: PORT });

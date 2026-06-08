@@ -146,6 +146,14 @@ export function mountBluff(app, io, { port }) {
 
   gs.onReset((room) => { clearTimer(room); room.game.cur = null; room.game.roundIndex = -1; room.game.screen = null; });
 
+  // a player leaving shouldn't hold up the round — re-check if it can close now
+  gs.onDisconnect((room, _player, api) => {
+    const cur = room.game.cur;
+    if (!cur) return;
+    if (cur.phase === 'lie' && (cur.lies.size + cur.knewIt.size) >= api.activePlayers().length) closeLies(room, api);
+    else if (cur.phase === 'vote' && cur.votes.size >= eligibleVoters(room, api)) closeVotes(room, api);
+  });
+
   gs.handle('bluff:submitLie', (api) => {
     const { room, player, payload, ack } = api;
     const cur = room.game.cur;

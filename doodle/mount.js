@@ -94,6 +94,16 @@ export function mountDoodle(app, io, { port }) {
 
   gs.onReset((room) => { clearTimer(room); room.game.cur = null; room.game.roundIndex = -1; room.game.screen = null; });
 
+  // if the drawer leaves, end the round immediately; if a guesser leaves and
+  // everyone remaining has guessed, reveal now.
+  gs.onDisconnect((room, player, api) => {
+    const cur = room.game.cur;
+    if (!cur || cur.phase !== 'draw') return;
+    if (player.id === cur.drawerKey) { revealRound(room, api); return; }
+    const need = api.activePlayers().filter((p) => p.id !== cur.drawerKey).length;
+    if (need > 0 && cur.guessed.size >= need) revealRound(room, api);
+  });
+
   // drawer strokes → relay to everyone else
   gs.handle('doodle:stroke', (api) => {
     const cur = api.room.game.cur;
