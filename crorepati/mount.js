@@ -15,6 +15,8 @@ const ANSWER_SECONDS = Number(process.env.KBC_ANSWER || 20);
 const REVEAL_SECONDS = Number(process.env.KBC_REVEAL || 6);
 const VALUES = [1000, 5000, 20000, 50000, 100000, 250000, 500000, 1000000]; // ₹ ladder
 
+const resultsSnap = (room) => room.state === 'results'
+  ? { event: 'game:over', data: { results: room.game.finalResults || [] } } : null;
 const nameOf = (room, key) => room.players.get(key)?.name ?? '???';
 const addScore = (room, key, pts) => { const p = room.players.get(key); if (p) p.score += pts; };
 
@@ -24,6 +26,8 @@ export function mountCrorepati(app, io, { port }) {
     port,
     publicDir: join(__dirname, 'public'),
     initRoom: () => ({ timer: null, cur: null, ladder: [], roundIndex: -1 }),
+    stateForJoiner: (room) => resultsSnap(room),
+    stateForHost: (room) => resultsSnap(room),
   });
 
   app.get('/crorepati/api/packs', (_req, res) => res.json(listPacks()));
@@ -87,7 +91,8 @@ export function mountCrorepati(app, io, { port }) {
   function finish(room, api) {
     clearTimer(room);
     room.state = 'results';
-    api.broadcast('game:over', { results: api.players() });
+    room.game.finalResults = api.players();
+    api.broadcast('game:over', { results: room.game.finalResults });
   }
 
   gs.onStart((room, api) => {

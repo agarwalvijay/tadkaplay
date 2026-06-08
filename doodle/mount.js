@@ -14,6 +14,8 @@ const MAX_ROUNDS = Number(process.env.DOODLE_ROUNDS || 8);
 const DRAW_SECONDS = Number(process.env.DOODLE_DRAW || 75);
 const REVEAL_SECONDS = Number(process.env.DOODLE_REVEAL || 6);
 
+const resultsSnap = (room) => room.state === 'results'
+  ? { event: 'game:over', data: { results: room.game.finalResults || [] } } : null;
 const norm = (s) => String(s || '').toLowerCase().trim().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ');
 const nameOf = (room, key) => room.players.get(key)?.name ?? '???';
 const addScore = (room, key, pts) => { const p = room.players.get(key); if (p) p.score += pts; };
@@ -24,6 +26,8 @@ export function mountDoodle(app, io, { port }) {
     port,
     publicDir: join(__dirname, 'public'),
     initRoom: () => ({ timer: null, cur: null, words: [], order: [], roundIndex: -1 }),
+    stateForJoiner: (room) => resultsSnap(room),
+    stateForHost: (room) => resultsSnap(room),
   });
 
   app.get('/doodle/api/packs', (_req, res) => res.json(listPacks()));
@@ -71,7 +75,8 @@ export function mountDoodle(app, io, { port }) {
   function finish(room, api) {
     clearTimer(room);
     room.state = 'results';
-    api.broadcast('game:over', { results: api.players() });
+    room.game.finalResults = api.players();
+    api.broadcast('game:over', { results: room.game.finalResults });
   }
 
   gs.onStart((room, api) => {

@@ -44,6 +44,17 @@ body {
   position: relative;
 }
 
+/* home button — back to the Tadka Play landing page */
+.home-btn {
+  position: fixed; top: 14px; left: 14px; z-index: 50;
+  width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 1.25rem; text-decoration: none;
+  background: var(--glass); border: 1px solid var(--glass-line); color: #fff;
+  backdrop-filter: blur(8px);
+  transition: filter 0.12s ease, transform 0.12s ease;
+}
+.home-btn:hover { filter: brightness(1.2); transform: scale(1.05); }
+
 /* Floating letters drifting in the background */
 .bg-letters { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
 .bg-letters span {

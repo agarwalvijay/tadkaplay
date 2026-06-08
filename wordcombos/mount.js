@@ -182,7 +182,7 @@ export function mountWordCombos(app, io, { basePath = '/wordcombos', port = proc
         .sort((a, b) => b.points - a.points || b.word.length - a.word.length),
     }));
 
-    nsp.to(room.code).emit('game:over', {
+    room.finalPayload = {
       results,
       possibleCount: room.analysis?.possibleCount ?? 0,
       bestPossible: room.analysis?.best ?? null,
@@ -190,7 +190,8 @@ export function mountWordCombos(app, io, { basePath = '/wordcombos', port = proc
         longestWord,
         bestWord,
       },
-    });
+    };
+    nsp.to(room.code).emit('game:over', room.finalPayload);
   }
 
   function findExtreme(players, metric) {
@@ -256,6 +257,7 @@ export function mountWordCombos(app, io, { basePath = '/wordcombos', port = proc
       socket.join(room.code);
       socket.emit('host:reclaimed', { code: room.code });
       broadcastPlayers(room);
+      if (room.state === 'results' && room.finalPayload) socket.emit('game:over', room.finalPayload);
     });
 
     socket.on('host:playAgain', () => {
@@ -322,6 +324,8 @@ export function mountWordCombos(app, io, { basePath = '/wordcombos', port = proc
           spectator: true,
         });
       }
+      // reconnecting after the round ended → re-send results
+      if (room.state === 'results' && room.finalPayload) socket.emit('game:over', room.finalPayload);
       broadcastPlayers(room);
     });
 

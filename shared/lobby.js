@@ -53,6 +53,7 @@ export class GameServer {
       initPlayer: () => ({}),
       mapPlayer: () => ({}),
       stateForJoiner: () => null,
+      stateForHost: () => null,
       onStart: () => {},
       onReset: () => {},
       onClose: () => {},
@@ -168,6 +169,10 @@ export class GameServer {
         socket.join(room.code);
         socket.emit('host:reclaimed', { code: room.code, state: room.state });
         this.broadcastPlayers(room);
+        // re-send the current screen so a host that blipped near game-end
+        // (e.g. screen lock) catches up — including the results.
+        const snap = this.opts.stateForHost(room);
+        if (snap) socket.emit(snap.event, snap.data);
       });
 
       socket.on('host:playAgain', () => {

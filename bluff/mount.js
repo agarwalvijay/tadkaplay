@@ -19,6 +19,8 @@ const REVEAL_SECONDS = Number(process.env.BLUFF_REVEAL || 8);
 const FOOL_POINTS = 500;
 const TRUTH_POINTS = 1000;
 
+const resultsSnap = (room) => room.state === 'results'
+  ? { event: 'game:over', data: { results: room.game.finalResults || [] } } : null;
 const norm = (s) => String(s).toLowerCase().trim().replace(/[.!?]+$/, '').replace(/\s+/g, ' ');
 const nameOf = (room, key) => room.players.get(key)?.name ?? '???';
 const avatarOf = (room, key) => room.players.get(key)?.avatar ?? null;
@@ -30,6 +32,8 @@ export function mountBluff(app, io, { port }) {
     port,
     publicDir: join(__dirname, 'public'),
     initRoom: () => ({ timer: null, cur: null, prompts: [], roundIndex: -1 }),
+    stateForJoiner: (room) => resultsSnap(room),
+    stateForHost: (room) => resultsSnap(room),
   });
 
   // pack list for the host's picker
@@ -122,7 +126,8 @@ export function mountBluff(app, io, { port }) {
   function finish(room, api) {
     clearTimer(room);
     room.state = 'results';
-    api.broadcast('game:over', { results: api.players() });
+    room.game.finalResults = api.players();
+    api.broadcast('game:over', { results: room.game.finalResults });
   }
 
   // --- lifecycle + handlers ---------------------------------------------
