@@ -82,7 +82,7 @@ function renderLobby(players) {
     name.textContent = p.name;
     const status = document.createElement('div');
     status.className = 'pstatus';
-    status.textContent = p.ready ? '✓ Ready' : 'joined';
+    status.textContent = p.ready ? '✓ Ready' : 'waiting…';
     card.append(av, name, status);
     grid.appendChild(card);
   }
