@@ -1,0 +1,6 @@
+/* Word Combos skin — the original neon (matches the base theme).
+   Override tokens here to re-skin just this game. */
+:root {
+  --bg0: #150726; --bg1: #2b0b4d; --bg2: #3d0a5e;
+  --glow1: #5e1b9e; --glow2: #c81d77; --glow3: #1b4dd6;
+}

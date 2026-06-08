@@ -1,0 +1,8 @@
+/* Crorepati skin — gold & royal (KBC hot-seat). */
+:root {
+  --bg0: #0b0a1e; --bg1: #161038; --bg2: #241544;
+  --glow1: #ffd23f; --glow2: #b8860b; --glow3: #3b1d8a;
+  --cyan: #ffd23f;   /* remap the primary accent to gold */
+  --violet: #7b3fe4;
+  --hot: #e63946;
+}

@@ -1,10 +1,17 @@
-/* ============ WORD COMBOS — shared theme ============ */
+/* ============ Tadka Play — shared base theme ============
+   Default skin (neon). A game can re-skin itself by overriding these tokens
+   in its own skin.css (loaded after this file) — backgrounds, accents and
+   components all follow. See any game's public/skin.css. */
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Baloo+2:wght@600;700;800&display=swap');
 
 :root {
   --bg0: #150726;
   --bg1: #2b0b4d;
   --bg2: #3d0a5e;
+  /* background glow blobs (skinnable) */
+  --glow1: #5e1b9e;
+  --glow2: #c81d77;
+  --glow3: #1b4dd6;
   --pink: #ff5d8f;
   --hot: #ff006e;
   --orange: #ff8c42;
@@ -28,9 +35,9 @@ body {
   min-height: 100%;
   color: var(--paper);
   background:
-    radial-gradient(1200px 800px at 15% -10%, #5e1b9e 0%, transparent 55%),
-    radial-gradient(1000px 700px at 110% 20%, #c81d77 0%, transparent 50%),
-    radial-gradient(900px 900px at 50% 120%, #1b4dd6 0%, transparent 55%),
+    radial-gradient(1200px 800px at 15% -10%, var(--glow1) 0%, transparent 55%),
+    radial-gradient(1000px 700px at 110% 20%, var(--glow2) 0%, transparent 50%),
+    radial-gradient(900px 900px at 50% 120%, var(--glow3) 0%, transparent 55%),
     linear-gradient(160deg, var(--bg0), var(--bg1) 55%, var(--bg2));
   background-attachment: fixed;
   overflow-x: hidden;
