@@ -1,0 +1,28 @@
+/* Crorepati host — on top of theme.css + lobby.css */
+.mute-btn {
+  position: fixed; top: 14px; right: 14px; z-index: 50;
+  width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 1.3rem;
+  background: var(--glass); border: 1px solid var(--glass-line); color: #fff; backdrop-filter: blur(8px);
+}
+.play-head { display: flex; align-items: center; justify-content: center; gap: 1.4rem; flex-wrap: wrap; width: 100%; max-width: 1200px; }
+.value-pill {
+  font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(1.4rem, 3.4vw, 2.4rem);
+  padding: 0.3rem 1.2rem; border-radius: 999px; color: #06121b;
+  background: linear-gradient(135deg, var(--yellow), var(--orange)); box-shadow: 0 0 24px rgba(255,210,63,0.5);
+}
+.kbc-main { display: grid; grid-template-columns: 1fr 300px; gap: 1.6rem; width: 100%; max-width: 1200px; align-items: start; }
+@media (max-width: 820px) { .kbc-main { grid-template-columns: 1fr; } }
+.kbc-q { display: flex; flex-direction: column; gap: 1.2rem; }
+.kbc-q .game-q { max-width: none; }
+
+/* options use the shared .opt rows; add reveal states */
+.opt.correct { box-shadow: 0 0 0 3px var(--lime) inset; background: rgba(6,214,160,0.16); }
+.opt.dim { opacity: 0.4; }
+.opt .tally { font-family: 'Baloo 2'; font-weight: 800; opacity: 0.85; }
+
+.scoreboard .sb-row { grid-template-columns: 32px 40px 1fr auto; padding: 0.45rem 0.8rem; }
+.scoreboard .sb-row .avatar { width: 36px; height: 36px; font-size: 1.4rem; }
+.scoreboard .sb-row .sb-name { font-size: 1rem; }
+.scoreboard .sb-row .sb-score { font-size: 1.1rem; }
+.scoreboard .sb-row .rank { font-size: 1rem; }
