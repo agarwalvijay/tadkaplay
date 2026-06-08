@@ -107,7 +107,10 @@ export class GameServer {
     if (room.state !== 'lobby') return;
     if ([...room.players.values()].filter((p) => !p.spectator).length === 0) return;
     room.state = 'playing';
-    this.opts.onStart(room, this._api(room, { payload }));
+    // host config (e.g. selected pack) persists on the room so an auto-start
+    // when everyone readies up uses it too, not just the Start button.
+    const cfg = { ...(room.config || {}), ...(payload || {}) };
+    this.opts.onStart(room, this._api(room, { payload: cfg }));
   }
 
   // --- wiring ------------------------------------------------------------
@@ -124,7 +127,7 @@ export class GameServer {
 
         const room = {
           code, hostId: socket.id, players: new Map(), state: 'lobby',
-          game: this.opts.initRoom(),
+          config: {}, game: this.opts.initRoom(),
         };
         this.rooms.set(code, room);
         socket.data.role = 'host';
@@ -137,6 +140,14 @@ export class GameServer {
         });
         socket.emit('host:created', { code, joinUrl, qr });
         this.broadcastPlayers(room);
+      });
+
+      // host sets pre-game config (e.g. selected pack) — persisted on the room
+      socket.on('host:config', (cfg) => {
+        const room = this.rooms.get(socket.data.roomCode);
+        if (room && room.hostId === socket.id && cfg && typeof cfg === 'object') {
+          room.config = { ...room.config, ...cfg };
+        }
       });
 
       socket.on('host:start', (payload) => {

@@ -47,12 +47,14 @@ async function loadPacks() {
     const packs = await fetch(NS + '/api/packs').then((r) => r.json());
     const wrap = $('packs'); wrap.innerHTML = '';
     selectedPack = packs[0]?.id || null;
+    socket.emit('host:config', { packId: selectedPack }); // default before any auto-start
     packs.forEach((p) => {
       const chip = document.createElement('div');
       chip.className = 'pack-chip' + (p.id === selectedPack ? ' sel' : '');
       chip.innerHTML = `<span>${p.emoji || '🎲'}</span> ${esc(p.name)}`;
       chip.onclick = () => {
         selectedPack = p.id;
+        socket.emit('host:config', { packId: selectedPack });
         [...wrap.children].forEach((c) => c.classList.remove('sel'));
         chip.classList.add('sel');
         Sound.play('tick');

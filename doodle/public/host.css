@@ -1,0 +1,50 @@
+/* Doodle host — on top of theme.css + lobby.css */
+.mute-btn {
+  position: fixed; top: 14px; right: 14px; z-index: 50;
+  width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 1.3rem;
+  background: var(--glass); border: 1px solid var(--glass-line); color: #fff; backdrop-filter: blur(8px);
+}
+
+.play-head {
+  display: flex; align-items: center; justify-content: center; gap: 1.4rem; flex-wrap: wrap;
+  width: 100%; max-width: 1300px;
+}
+.draw-info { font-size: clamp(1.1rem, 2.6vw, 1.8rem); }
+.pattern {
+  font-family: 'Baloo 2'; font-weight: 800; letter-spacing: 0.35rem;
+  font-size: clamp(1.4rem, 3.4vw, 2.6rem); color: var(--yellow);
+}
+
+.doodle-main {
+  display: grid; grid-template-columns: auto 320px; gap: 1.4rem; align-items: start;
+  width: 100%; max-width: 1300px;
+}
+@media (max-width: 820px) { .doodle-main { grid-template-columns: 1fr; } }
+
+.board {
+  background: #fff; border-radius: 22px; box-shadow: var(--shadow);
+  width: min(64vw, 64vh); aspect-ratio: 1; touch-action: none; display: block; margin: 0 auto;
+}
+@media (max-width: 820px) { .board { width: min(92vw, 60vh); } }
+
+.side { display: flex; flex-direction: column; gap: 1rem; }
+.scoreboard .sb-row { grid-template-columns: 36px 44px 1fr auto; padding: 0.5rem 0.9rem; }
+.scoreboard .sb-row .avatar { width: 40px; height: 40px; font-size: 1.6rem; }
+.scoreboard .sb-row .sb-name { font-size: 1.05rem; }
+.scoreboard .sb-row .sb-score { font-size: 1.2rem; }
+.scoreboard .sb-row .rank { font-size: 1.1rem; }
+
+.feed { display: flex; flex-direction: column; gap: 0.4rem; max-height: 26vh; overflow: hidden; }
+.feed-chip {
+  padding: 0.35rem 0.8rem; border-radius: 12px; font-size: 0.95rem;
+  background: var(--glass); border: 1px solid var(--glass-line); animation: pop-in 0.25s both;
+}
+.feed-chip.correct { background: rgba(6,214,160,0.18); border-color: var(--lime); font-weight: 700; }
+
+.reveal-word {
+  font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(2.4rem, 9vw, 6rem);
+  text-transform: uppercase; letter-spacing: 0.1rem;
+  background: linear-gradient(92deg, var(--yellow), var(--lime), var(--cyan));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}

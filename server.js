@@ -13,6 +13,7 @@ import os from 'node:os';
 
 import { mountWordCombos } from './wordcombos/mount.js';
 import { mountBluff } from './bluff/mount.js';
+import { mountDoodle } from './doodle/mount.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 8080;
@@ -24,7 +25,8 @@ const io = new Server(httpServer);
 // ---- mounted games (URL prefix + socket namespace each) ----
 mountWordCombos(app, io, { basePath: '/wordcombos', port: PORT });
 mountBluff(app, io, { port: PORT });
-// future games: mountDoodle(app, io, { port: PORT }); ...
+mountDoodle(app, io, { port: PORT });
+// future games: mountCrorepati(app, io, { port: PORT }); ...
 
 // ---- assets shared by all games (theme.css, sounds.js, fx.js, avatars.js) ----
 app.use('/shared', express.static(join(__dirname, 'public', 'shared')));

@@ -52,13 +52,17 @@ export const GAMES = [
 
   // -------- on the workbench --------
   {
-    id: 'soon-doodle',
-    title: 'Coming Soon',
-    tagline: 'Draw it. Guess it. Lose it.',
+    id: 'doodle',
+    title: 'Doodle',
+    tagline: 'Draw it. Guess it.',
+    description: 'One player draws a secret word on their phone; it streams to the big screen while everyone else races to guess it.',
     icon: '🎨',
     accent: '#ff7a18',
     accent2: '#e63946',
-    status: 'soon',
+    status: 'live',
+    path: '/doodle/host',
+    spice: 1,
+    meta: ['👥 3–8', '✏️ Drawing'],
   },
   {
     id: 'soon-aim',
