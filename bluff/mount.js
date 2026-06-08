@@ -19,8 +19,6 @@ const REVEAL_SECONDS = Number(process.env.BLUFF_REVEAL || 8);
 const FOOL_POINTS = 500;
 const TRUTH_POINTS = 1000;
 
-const resultsSnap = (room) => room.state === 'results'
-  ? { event: 'game:over', data: { results: room.game.finalResults || [] } } : null;
 const norm = (s) => String(s).toLowerCase().trim().replace(/[.!?]+$/, '').replace(/\s+/g, ' ');
 const nameOf = (room, key) => room.players.get(key)?.name ?? '???';
 const avatarOf = (room, key) => room.players.get(key)?.avatar ?? null;
@@ -32,8 +30,8 @@ export function mountBluff(app, io, { port }) {
     port,
     publicDir: join(__dirname, 'public'),
     initRoom: () => ({ timer: null, cur: null, prompts: [], roundIndex: -1 }),
-    stateForJoiner: (room) => resultsSnap(room),
-    stateForHost: (room) => resultsSnap(room),
+    stateForJoiner: (room) => room.game.screen || null,
+    stateForHost: (room) => room.game.screen || null,
   });
 
   // pack list for the host's picker
@@ -51,7 +49,9 @@ export function mountBluff(app, io, { port }) {
 
     const prompt = g.prompts[g.roundIndex];
     g.cur = { q: prompt.q, answer: prompt.a, phase: 'lie', lies: new Map(), votes: new Map(), knewIt: new Set(), options: null };
-    api.broadcast('bluff:lie', { q: prompt.q, round: g.roundIndex + 1, total: g.prompts.length, seconds: LIE_SECONDS });
+    const liePayload = { q: prompt.q, round: g.roundIndex + 1, total: g.prompts.length, seconds: LIE_SECONDS };
+    g.screen = { event: 'bluff:lie', data: liePayload };
+    api.broadcast('bluff:lie', liePayload);
     api.toHost('bluff:lieProgress', { submitted: 0, total: api.activePlayers().length });
     api.broadcastPlayers();
     clearTimer(room);
@@ -76,11 +76,13 @@ export function mountBluff(app, io, { port }) {
     for (const { text, authors } of merged.values()) opts.push({ id: id++, text, truth: false, authors });
     cur.options = api.shuffle(opts);
 
-    api.broadcast('bluff:vote', {
+    const votePayload = {
       q: cur.q,
       options: cur.options.map((o) => ({ id: o.id, text: o.text })),
       round: room.game.roundIndex + 1, total: room.game.prompts.length, seconds: VOTE_SECONDS,
-    });
+    };
+    room.game.screen = { event: 'bluff:vote', data: votePayload };
+    api.broadcast('bluff:vote', votePayload);
     api.toHost('bluff:voteProgress', { voted: 0, total: eligibleVoters(room, api) });
     room.game.timer = setTimeout(() => closeVotes(room, api), VOTE_SECONDS * 1000);
   }
@@ -113,12 +115,14 @@ export function mountBluff(app, io, { port }) {
       voters: o.voters.map((k) => ({ name: nameOf(room, k), avatar: avatarOf(room, k) })),
     }));
 
-    api.broadcast('bluff:reveal', {
+    const revealPayload = {
       q: cur.q, answer: cur.answer, options,
       knewIt: [...cur.knewIt].map((k) => nameOf(room, k)),
       scores: api.players(),
       round: room.game.roundIndex + 1, total: room.game.prompts.length,
-    });
+    };
+    room.game.screen = { event: 'bluff:reveal', data: revealPayload };
+    api.broadcast('bluff:reveal', revealPayload);
     api.broadcastPlayers();
     room.game.timer = setTimeout(() => nextRound(room, api), REVEAL_SECONDS * 1000);
   }
@@ -127,6 +131,7 @@ export function mountBluff(app, io, { port }) {
     clearTimer(room);
     room.state = 'results';
     room.game.finalResults = api.players();
+    room.game.screen = { event: 'game:over', data: { results: room.game.finalResults } };
     api.broadcast('game:over', { results: room.game.finalResults });
   }
 
@@ -139,7 +144,7 @@ export function mountBluff(app, io, { port }) {
     nextRound(room, api);
   });
 
-  gs.onReset((room) => { clearTimer(room); room.game.cur = null; room.game.roundIndex = -1; });
+  gs.onReset((room) => { clearTimer(room); room.game.cur = null; room.game.roundIndex = -1; room.game.screen = null; });
 
   gs.handle('bluff:submitLie', (api) => {
     const { room, player, payload, ack } = api;

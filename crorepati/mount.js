@@ -15,8 +15,6 @@ const ANSWER_SECONDS = Number(process.env.KBC_ANSWER || 20);
 const REVEAL_SECONDS = Number(process.env.KBC_REVEAL || 6);
 const VALUES = [1000, 5000, 20000, 50000, 100000, 250000, 500000, 1000000]; // ₹ ladder
 
-const resultsSnap = (room) => room.state === 'results'
-  ? { event: 'game:over', data: { results: room.game.finalResults || [] } } : null;
 const nameOf = (room, key) => room.players.get(key)?.name ?? '???';
 const addScore = (room, key, pts) => { const p = room.players.get(key); if (p) p.score += pts; };
 
@@ -26,8 +24,8 @@ export function mountCrorepati(app, io, { port }) {
     port,
     publicDir: join(__dirname, 'public'),
     initRoom: () => ({ timer: null, cur: null, ladder: [], roundIndex: -1 }),
-    stateForJoiner: (room) => resultsSnap(room),
-    stateForHost: (room) => resultsSnap(room),
+    stateForJoiner: (room) => room.game.screen || null,
+    stateForHost: (room) => room.game.screen || null,
   });
 
   app.get('/crorepati/api/packs', (_req, res) => res.json(listPacks()));
@@ -48,10 +46,12 @@ export function mountCrorepati(app, io, { port }) {
     const answer = order.indexOf(item.answer);
     g.cur = { q: item.q, options, answer, value, answers: new Map(), phase: 'answer', startedAt: Date.now() };
 
-    api.broadcast('kbc:question', {
+    const questionPayload = {
       round: g.roundIndex + 1, total: g.ladder.length,
       q: item.q, options, value, seconds: ANSWER_SECONDS,
-    });
+    };
+    g.screen = { event: 'kbc:question', data: questionPayload };
+    api.broadcast('kbc:question', questionPayload);
     api.toHost('kbc:progress', { answered: 0, total: api.activePlayers().length });
     api.broadcastPlayers();
     clearTimer(room);
@@ -78,12 +78,14 @@ export function mountCrorepati(app, io, { port }) {
     }
     if (fastest) addScore(room, fastest.key, Math.round(cur.value * 0.25));
 
-    api.broadcast('kbc:reveal', {
+    const revealPayload = {
       answer: cur.answer, tally, value: cur.value,
       correct: correctNames,
       fastest: fastest ? nameOf(room, fastest.key) : null,
       scores: api.players(),
-    });
+    };
+    room.game.screen = { event: 'kbc:reveal', data: revealPayload };
+    api.broadcast('kbc:reveal', revealPayload);
     api.broadcastPlayers();
     room.game.timer = setTimeout(() => nextQuestion(room, api), REVEAL_SECONDS * 1000);
   }
@@ -92,6 +94,7 @@ export function mountCrorepati(app, io, { port }) {
     clearTimer(room);
     room.state = 'results';
     room.game.finalResults = api.players();
+    room.game.screen = { event: 'game:over', data: { results: room.game.finalResults } };
     api.broadcast('game:over', { results: room.game.finalResults });
   }
 
@@ -102,7 +105,7 @@ export function mountCrorepati(app, io, { port }) {
     nextQuestion(room, api);
   });
 
-  gs.onReset((room) => { clearTimer(room); room.game.cur = null; room.game.roundIndex = -1; });
+  gs.onReset((room) => { clearTimer(room); room.game.cur = null; room.game.roundIndex = -1; room.game.screen = null; });
 
   gs.handle('kbc:answer', (api) => {
     const { room, player, payload, ack } = api;

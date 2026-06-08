@@ -14,8 +14,6 @@ const MAX_ROUNDS = Number(process.env.DOODLE_ROUNDS || 8);
 const DRAW_SECONDS = Number(process.env.DOODLE_DRAW || 75);
 const REVEAL_SECONDS = Number(process.env.DOODLE_REVEAL || 6);
 
-const resultsSnap = (room) => room.state === 'results'
-  ? { event: 'game:over', data: { results: room.game.finalResults || [] } } : null;
 const norm = (s) => String(s || '').toLowerCase().trim().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ');
 const nameOf = (room, key) => room.players.get(key)?.name ?? '???';
 const addScore = (room, key, pts) => { const p = room.players.get(key); if (p) p.score += pts; };
@@ -26,8 +24,8 @@ export function mountDoodle(app, io, { port }) {
     port,
     publicDir: join(__dirname, 'public'),
     initRoom: () => ({ timer: null, cur: null, words: [], order: [], roundIndex: -1 }),
-    stateForJoiner: (room) => resultsSnap(room),
-    stateForHost: (room) => resultsSnap(room),
+    stateForJoiner: (room) => room.game.screen || null,
+    stateForHost: (room) => room.game.screen || null,
   });
 
   app.get('/doodle/api/packs', (_req, res) => res.json(listPacks()));
@@ -46,12 +44,14 @@ export function mountDoodle(app, io, { port }) {
     g.cur = { drawerKey, word, answerNorm: norm(answer), guessed: new Map(), phase: 'draw' };
 
     const pattern = answer.split(/\s+/).map((w) => '_'.repeat(w.length)).join('   ');
-    api.broadcast('doodle:clear');
-    api.broadcast('doodle:round', {
+    const roundPayload = {
       round: g.roundIndex + 1, total: g.order.length,
       drawerId: drawerKey, drawerName: nameOf(room, drawerKey),
       pattern, seconds: DRAW_SECONDS,
-    });
+    };
+    g.screen = { event: 'doodle:round', data: roundPayload };
+    api.broadcast('doodle:clear');
+    api.broadcast('doodle:round', roundPayload);
     const drawerSocket = room.players.get(drawerKey)?.socketId;
     if (drawerSocket) api.toSocket(drawerSocket, 'doodle:word', { word, answer });
     api.broadcastPlayers();
@@ -65,9 +65,9 @@ export function mountDoodle(app, io, { port }) {
     clearTimer(room);
     cur.phase = 'reveal';
     const guessers = [...cur.guessed.keys()].map((k) => nameOf(room, k));
-    api.broadcast('doodle:reveal', {
-      word: cur.word, drawer: nameOf(room, cur.drawerKey), guessers, scores: api.players(),
-    });
+    const revealPayload = { word: cur.word, drawer: nameOf(room, cur.drawerKey), guessers, scores: api.players() };
+    room.game.screen = { event: 'doodle:reveal', data: revealPayload };
+    api.broadcast('doodle:reveal', revealPayload);
     api.broadcastPlayers();
     room.game.timer = setTimeout(() => nextRound(room, api), REVEAL_SECONDS * 1000);
   }
@@ -76,6 +76,7 @@ export function mountDoodle(app, io, { port }) {
     clearTimer(room);
     room.state = 'results';
     room.game.finalResults = api.players();
+    room.game.screen = { event: 'game:over', data: { results: room.game.finalResults } };
     api.broadcast('game:over', { results: room.game.finalResults });
   }
 
@@ -91,7 +92,7 @@ export function mountDoodle(app, io, { port }) {
     nextRound(room, api);
   });
 
-  gs.onReset((room) => { clearTimer(room); room.game.cur = null; room.game.roundIndex = -1; });
+  gs.onReset((room) => { clearTimer(room); room.game.cur = null; room.game.roundIndex = -1; room.game.screen = null; });
 
   // drawer strokes → relay to everyone else
   gs.handle('doodle:stroke', (api) => {
