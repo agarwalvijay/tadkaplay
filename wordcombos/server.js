@@ -9,14 +9,19 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import os from 'os';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import { mountWordCombos } from './mount.js';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3000;
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
+// shared assets live one level up (served by the hub at /shared too)
+app.use('/shared', express.static(join(__dirname, '..', 'public', 'shared')));
 mountWordCombos(app, io, { basePath: '/wordcombos', port: PORT });
 app.get('/', (_req, res) => res.redirect('/wordcombos/host'));
 

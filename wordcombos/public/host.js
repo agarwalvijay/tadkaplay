@@ -1,5 +1,5 @@
-import { Sound } from './sounds.js';
-import { confettiBurst, spawnBgLetters } from './fx.js';
+import { Sound } from '/shared/sounds.js';
+import { confettiBurst, spawnBgLetters } from '/shared/fx.js';
 
 spawnBgLetters(20);
 // Connect to this game's socket namespace, derived from the URL prefix

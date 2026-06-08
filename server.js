@@ -24,6 +24,9 @@ const io = new Server(httpServer);
 mountWordCombos(app, io, { basePath: '/wordcombos', port: PORT });
 // future games: mountTrivia(app, io, { basePath: '/trivia', port: PORT }); ...
 
+// ---- assets shared by all games (theme.css, sounds.js, fx.js, avatars.js) ----
+app.use('/shared', express.static(join(__dirname, 'public', 'shared')));
+
 // ---- the landing hub (index.html, landing.css, app.js, games.js) ----
 app.use(express.static(__dirname, { index: 'index.html' }));
 

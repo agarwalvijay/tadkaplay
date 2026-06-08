@@ -1,6 +1,6 @@
-import { Sound } from './sounds.js';
-import { EMOJIS, COLORS, randomName, randomAvatar } from './avatars.js';
-import { spawnBgLetters } from './fx.js';
+import { Sound } from '/shared/sounds.js';
+import { EMOJIS, COLORS, randomName, randomAvatar } from '/shared/avatars.js';
+import { spawnBgLetters } from '/shared/fx.js';
 
 spawnBgLetters(12);
 // Connect to this game's socket namespace, derived from the URL prefix
