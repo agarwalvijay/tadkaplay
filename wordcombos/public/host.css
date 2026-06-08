@@ -51,7 +51,7 @@
   background: var(--glass); border: 1px solid var(--glass-line);
   animation: pop-in 0.4s cubic-bezier(.2,1.4,.4,1) both;
 }
-.player-card .avatar { width: 64px; height: 64px; }
+.player-card .avatar { width: 92px; height: 92px; border-width: 4px; }
 .player-card .pname { font-weight: 600; font-size: 1.05rem; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .player-card .pstatus { font-size: 0.8rem; opacity: 0.7; }
 .player-card.ready { box-shadow: 0 0 0 3px var(--lime) inset; }
@@ -99,7 +99,7 @@
   transition: transform 0.5s cubic-bezier(.2,.9,.3,1), background 0.3s;
 }
 .lb-row .rank { font-family: 'Baloo 2'; font-weight: 800; font-size: 1.5rem; opacity: 0.7; }
-.lb-row .avatar { width: 48px; height: 48px; }
+.lb-row .avatar { width: 60px; height: 60px; }
 .lb-row .lb-name { font-weight: 600; font-size: 1.3rem; }
 .lb-row .lb-words { opacity: 0.7; font-size: 1rem; }
 .lb-row .lb-score { font-family: 'Baloo 2'; font-weight: 800; font-size: 1.6rem; color: var(--yellow); min-width: 90px; text-align: right; }
@@ -142,7 +142,7 @@
   animation: champ-pop 0.7s cubic-bezier(0.2, 1.6, 0.4, 1) both;
 }
 @keyframes champ-pop { 0% { transform: scale(0.7); } 60% { transform: scale(1.18); } 100% { transform: scale(1); } }
-.podium-col .avatar { width: clamp(48px, 7vh, 96px); height: clamp(48px, 7vh, 96px); }
+.podium-col .avatar { width: clamp(58px, 8.5vh, 116px); height: clamp(58px, 8.5vh, 116px); border-width: 4px; }
 .podium-col .pname { font-weight: 700; font-size: clamp(0.9rem, 1.6vw, 1.3rem); }
 .podium-col .pscore { font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(1.05rem, 1.8vw, 1.6rem); color: var(--yellow); }
 .podium-base {
