@@ -76,6 +76,11 @@ export function mountBluff(app, io, { port }) {
     for (const { text, authors } of merged.values()) opts.push({ id: id++, text, truth: false, authors });
     cur.options = api.shuffle(opts);
 
+    // if nobody can vote (everyone wrote the real answer → no lies), there's
+    // nothing to vote on — skip straight to the reveal instead of waiting out
+    // the vote timer.
+    if (eligibleVoters(room, api) === 0) { closeVotes(room, api); return; }
+
     const votePayload = {
       q: cur.q,
       options: cur.options.map((o) => ({ id: o.id, text: o.text })),
