@@ -40,6 +40,7 @@ socket.on('host:created', ({ code, joinUrl, qr }) => {
   $('joinUrl').textContent = joinUrl.replace(/^https?:\/\//, '');
   $('roomCode').textContent = code;
   loadPacks();
+  window.ttrack?.('game_created');
 });
 
 async function loadPacks() {
@@ -164,6 +165,7 @@ socket.on('game:over', ({ results }) => {
   });
   Sound.play('drumroll');
   setTimeout(() => { Sound.play('fanfare'); confettiBurst(200); }, 700);
+  window.ttrack?.('game_finished', { players: results.length });
 });
 
 $('playAgainBtn').onclick = () => socket.emit('host:playAgain');

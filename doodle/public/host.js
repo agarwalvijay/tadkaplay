@@ -33,6 +33,7 @@ socket.on('host:created', ({ code, joinUrl, qr }) => {
   $('preStart').classList.add('hidden'); $('lobbyBody').classList.remove('hidden');
   $('qrImg').src = qr; $('joinUrl').textContent = joinUrl.replace(/^https?:\/\//, ''); $('roomCode').textContent = code;
   loadPacks();
+  window.ttrack?.('game_created');
 });
 async function loadPacks() {
   try {
@@ -129,6 +130,7 @@ socket.on('game:over', ({ results }) => {
   renderScoreboard($('finalBoard'), results, { winner: true });
   Sound.play('drumroll');
   setTimeout(() => { Sound.play('fanfare'); confettiBurst(200); }, 700);
+  window.ttrack?.('game_finished', { players: results.length });
 });
 $('playAgainBtn').onclick = () => socket.emit('host:playAgain');
 socket.on('game:lobby', () => show('lobby'));

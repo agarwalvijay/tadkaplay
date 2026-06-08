@@ -37,6 +37,7 @@ socket.on('host:created', ({ code, joinUrl, qr, roundSeconds: rs }) => {
   $('qrImg').src = qr;
   $('roomCode').textContent = code;
   $('joinUrl').textContent = joinUrl.replace(/^https?:\/\//, '');
+  window.ttrack?.('game_created');
 });
 
 $('startGameBtn').addEventListener('click', () => {
@@ -200,6 +201,7 @@ function pushFeed(p) {
 socket.on('game:over', ({ results, possibleCount, bestPossible, awards }) => {
   clearInterval(timerInt);
   show('results');
+  window.ttrack?.('game_finished', { players: results.length });
   Sound.play('drumroll');           // builds tension while the podium reveals
   renderPodium(results);            // reveals 3rd → 2nd → 1st with count-ups + finale
   renderAwards(awards, bestPossible);

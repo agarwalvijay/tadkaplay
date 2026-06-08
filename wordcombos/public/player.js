@@ -116,6 +116,7 @@ socket.on('player:joinError', () => showJoinError("Couldn't find that room. Chec
 socket.on('player:joined', ({ id, name, avatar, state: gameState, spectator }) => {
   state.myId = id;
   state.spectator = spectator;
+  window.ttrack?.('player_joined');
   sessionStorage.setItem('wc_pid', id);
   styleAvatar($('waitAvatar'), avatar);
   $('waitName').textContent = name;

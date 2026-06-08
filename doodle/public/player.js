@@ -46,6 +46,7 @@ socket.on('player:joined', ({ id, name, avatar: av, spectator }) => {
   $('waitAvatar').textContent = av.emoji; $('waitAvatar').style.background = `radial-gradient(circle at 30% 25%, #ffffff66, ${av.color})`;
   $('waitName').textContent = name; $('spectatorNote').classList.toggle('hidden', !spectator);
   show('wait');
+  window.ttrack?.('player_joined');
 });
 $('readyBtn').onclick = () => {
   ready = !ready; socket.emit('player:setReady', { ready });
@@ -73,8 +74,6 @@ $('clearBtn').onclick = () => { board.clear(); socket.emit('doodle:clear'); };
 let amDrawer = false;
 socket.on('doodle:round', ({ drawerId, drawerName, pattern }) => {
   amDrawer = (myId === drawerId);
-  board.setDrawable(amDrawer); board.fit(); board.clear();
-  board.setColor(curColor);
   $('gotit').classList.add('hidden');
   $('tools').classList.toggle('hidden', !amDrawer);
   $('guessRow').classList.toggle('hidden', amDrawer);
@@ -88,6 +87,9 @@ socket.on('doodle:round', ({ drawerId, drawerName, pattern }) => {
     $('guessInput').value = ''; $('guessInput').disabled = false; $('guessBtn').disabled = false;
   }
   show('play');
+  // size the canvas only after it's visible, otherwise it fits to 0×0 and
+  // your own strokes draw onto an invisible bitmap
+  board.setDrawable(amDrawer); board.setColor(curColor); board.fit(); board.clear();
 });
 socket.on('doodle:word', ({ word }) => { if (amDrawer) $('roleLine').textContent = `✏️ Draw: ${word}`; });
 socket.on('doodle:stroke', (seg) => board.drawSegment(seg));

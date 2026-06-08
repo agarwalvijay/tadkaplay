@@ -70,6 +70,7 @@ socket.on('player:joined', ({ id, name, avatar: av, spectator }) => {
   $('waitName').textContent = name;
   $('spectatorNote').classList.toggle('hidden', !spectator);
   show('wait');
+  window.ttrack?.('player_joined');
 });
 
 $('readyBtn').onclick = () => {
