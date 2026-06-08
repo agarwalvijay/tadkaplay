@@ -72,8 +72,58 @@ function patternSVG() {
     ${GLOW}${dots}${shapes}</svg>`;
 }
 
+// Bluff: stacked multiple-choice answers, one marked as the truth.
+function bluffSVG() {
+  const rows = [{ y: 30, l: 'A', tw: 92, truth: false }, { y: 68, l: 'B', tw: 72, truth: true }, { y: 106, l: 'C', tw: 100, truth: false }];
+  let r = '';
+  rows.forEach((row) => {
+    r += `<rect x="22" y="${row.y}" width="156" height="30" rx="15" fill="rgba(255,255,255,0.06)"
+      stroke="${row.truth ? 'var(--accent)' : 'rgba(255,255,255,0.14)'}" stroke-width="${row.truth ? 2.5 : 1}"/>`;
+    r += `<circle cx="40" cy="${row.y + 15}" r="11" fill="${row.truth ? 'var(--accent)' : 'rgba(255,255,255,0.12)'}"/>`;
+    r += `<text x="40" y="${row.y + 20}" text-anchor="middle" font-family="'Baloo 2',sans-serif" font-weight="800" font-size="13" fill="${row.truth ? '#0a0612' : 'rgba(255,255,255,0.85)'}">${row.l}</text>`;
+    r += `<rect x="60" y="${row.y + 11}" width="${row.tw}" height="7" rx="3.5" fill="rgba(255,255,255,0.18)"/>`;
+    if (row.truth) r += `<path d="M150 ${row.y + 16} l5 6 l11 -14" stroke="#06d6a0" stroke-width="3.6" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#g)"/>`;
+  });
+  return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${GLOW}${r}</svg>`;
+}
+
+// Doodle: a paintbrush dragging a wavy stroke, with a couple of sparkles.
+function doodleSVG() {
+  const sparks = `<circle cx="40" cy="42" r="3" fill="var(--accent2)" opacity="0.7"/>
+    <circle cx="120" cy="34" r="2.4" fill="var(--accent)" opacity="0.6"/>
+    <path d="M58 26 v9 M53.5 30.5 h9" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>`;
+  const stroke = `<path d="M24 122 Q 54 68 88 100 T 150 74" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" filter="url(#g)"/>`;
+  const brush = `<line x1="150" y1="74" x2="186" y2="40" stroke="var(--accent2)" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="150" cy="74" r="10" fill="var(--accent)"/>
+    <circle cx="187" cy="39" r="6" fill="rgba(255,255,255,0.55)"/>`;
+  return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice">${GLOW}${sparks}${stroke}${brush}</svg>`;
+}
+
+// Crorepati: a glowing money ladder, the top rung is the jackpot.
+function crorepatiSVG() {
+  const defs = `<defs>
+    <linearGradient id="kbc" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--accent)"/><stop offset="1" stop-color="var(--accent2)"/></linearGradient>
+    <filter id="g" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>`;
+  const rungs = [{ y: 122, w: 58 }, { y: 100, w: 82 }, { y: 78, w: 106 }, { y: 56, w: 130 }];
+  let r = '';
+  rungs.forEach((g_) => {
+    r += `<rect x="${(200 - g_.w) / 2}" y="${g_.y}" width="${g_.w}" height="15" rx="7.5" fill="rgba(255,255,255,0.09)" stroke="rgba(255,255,255,0.14)"/>`;
+  });
+  // jackpot rung
+  r += `<rect x="20" y="28" width="160" height="22" rx="11" fill="url(#kbc)" filter="url(#g)"/>`;
+  r += `<text x="100" y="44" text-anchor="middle" font-family="'Baloo 2',sans-serif" font-weight="800" font-size="14" fill="#0a0612">₹ CROREPATI</text>`;
+  return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${defs}${r}</svg>`;
+}
+
 function artFor(g) {
-  return g.gfx === 'wordboard' ? wordBoardSVG() : patternSVG();
+  switch (g.gfx) {
+    case 'wordboard': return wordBoardSVG();
+    case 'bluff': return bluffSVG();
+    case 'doodle': return doodleSVG();
+    case 'crorepati': return crorepatiSVG();
+    default: return patternSVG();
+  }
 }
 
 // spice-level meter: 🌶️🌶️🌶️ with `n` lit
