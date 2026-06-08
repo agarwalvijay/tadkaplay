@@ -114,7 +114,34 @@
 #screen-results { justify-content: flex-start; gap: clamp(0.7rem, 1.8vh, 1.4rem); }
 .results-title { font-size: clamp(1.9rem, 6vw, 4.5rem); margin-top: 0; }
 .podium { display: flex; align-items: flex-end; justify-content: center; gap: clamp(0.7rem, 2vw, 1.4rem); width: 100%; }
-.podium-col { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; animation: pop-in 0.6s both; }
+.podium-col {
+  display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
+  position: relative;
+  /* hidden until revealed one-by-one by JS (.show) */
+  opacity: 0; transform: translateY(48px) scale(0.92);
+  transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.2, 1.5, 0.4, 1);
+}
+.podium-col.show { opacity: 1; transform: none; }
+
+/* winner spotlight + glow */
+.podium-col.champion::before {
+  content: '';
+  position: absolute; left: 50%; top: -8%;
+  width: 150%; height: 130%;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(255, 210, 63, 0.35), transparent 70%);
+  z-index: -1; pointer-events: none;
+  animation: champ-glow 1.8s ease-in-out infinite;
+}
+@keyframes champ-glow { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+.podium-col.champion .avatar {
+  box-shadow:
+    0 0 0 4px var(--yellow),
+    0 0 34px rgba(255, 210, 63, 0.8),
+    inset 0 -6px 14px rgba(0,0,0,0.28);
+  animation: champ-pop 0.7s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+@keyframes champ-pop { 0% { transform: scale(0.7); } 60% { transform: scale(1.18); } 100% { transform: scale(1); } }
 .podium-col .avatar { width: clamp(48px, 7vh, 96px); height: clamp(48px, 7vh, 96px); }
 .podium-col .pname { font-weight: 700; font-size: clamp(0.9rem, 1.6vw, 1.3rem); }
 .podium-col .pscore { font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(1.05rem, 1.8vw, 1.6rem); color: var(--yellow); }
@@ -126,7 +153,9 @@
 .podium-col.p1 .podium-base { height: clamp(96px, 19vh, 220px); background: linear-gradient(180deg, var(--yellow), var(--orange)); }
 .podium-col.p2 .podium-base { height: clamp(72px, 14vh, 160px); background: linear-gradient(180deg, #e0e7ff, #9fb3ff); }
 .podium-col.p3 .podium-base { height: clamp(56px, 10vh, 120px); background: linear-gradient(180deg, #ffcaa6, #ff8c42); }
-.podium-col.p1 .crown { font-size: clamp(1.5rem, 2.4vw, 2.4rem); animation: float-up-fade 0s, sway 2s ease-in-out infinite; }
+.podium-col.p1 .crown { font-size: clamp(1.5rem, 2.4vw, 2.4rem); opacity: 0; }
+.podium-col.p1.show .crown { animation: crown-drop 0.7s 0.15s cubic-bezier(0.2, 1.7, 0.4, 1) both, sway 2s 0.9s ease-in-out infinite; }
+@keyframes crown-drop { 0% { transform: translateY(-46px) scale(0.3) rotate(-25deg); opacity: 0; } 70% { transform: translateY(4px) scale(1.15) rotate(6deg); opacity: 1; } 100% { transform: translateY(0) scale(1) rotate(0); opacity: 1; } }
 @keyframes sway { 0%,100%{transform:rotate(-8deg)} 50%{transform:rotate(8deg)} }
 
 .awards { display: flex; gap: clamp(0.5rem, 1.4vw, 1rem); flex-wrap: wrap; justify-content: center; }

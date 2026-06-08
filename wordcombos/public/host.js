@@ -200,27 +200,39 @@ function pushFeed(p) {
 socket.on('game:over', ({ results, possibleCount, bestPossible, awards }) => {
   clearInterval(timerInt);
   show('results');
-  renderPodium(results);
+  Sound.play('drumroll');           // builds tension while the podium reveals
+  renderPodium(results);            // reveals 3rd → 2nd → 1st with count-ups + finale
   renderAwards(awards, bestPossible);
   $('gridFact').innerHTML = results.length
     ? `Players found their words out of <b>${possibleCount}</b> possible. ` +
       (bestPossible ? `The grid's best hidden word was <b>${bestPossible.toUpperCase()}</b>.` : '')
     : 'No players this round.';
-  Sound.play('drumroll');
-  setTimeout(() => { Sound.play('fanfare'); confettiBurst(180); }, 1100);
 });
+
+// Animate a number from 0 up to `to` (slot-machine count-up).
+function countUp(el, to, duration = 1000) {
+  const start = performance.now();
+  function tick(now) {
+    const t = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - t, 3);
+    el.textContent = Math.round(to * eased).toLocaleString();
+    if (t < 1) requestAnimationFrame(tick);
+    else el.textContent = to.toLocaleString();
+  }
+  requestAnimationFrame(tick);
+}
 
 function renderPodium(results) {
   const podium = $('podium');
   podium.innerHTML = '';
   const order = [1, 0, 2]; // visually: 2nd, 1st, 3rd
   const top3 = results.slice(0, 3);
+  const revealAt = { 1: 1900, 2: 1100, 3: 400 }; // reveal lowest rank first
   for (const slot of order) {
     const p = top3[slot];
     if (!p) continue;
     const col = document.createElement('div');
     col.className = `podium-col p${p.rank}`;
-    col.style.animationDelay = `${slot * 0.25}s`;
     if (p.rank === 1) {
       const crown = document.createElement('div');
       crown.className = 'crown';
@@ -233,7 +245,7 @@ function renderPodium(results) {
     name.textContent = p.name;
     const score = document.createElement('div');
     score.className = 'pscore';
-    score.textContent = p.score.toLocaleString();
+    score.textContent = '0';
     const wc = document.createElement('div');
     wc.style.opacity = '0.7';
     wc.textContent = `${p.wordCount} words`;
@@ -242,6 +254,21 @@ function renderPodium(results) {
     base.textContent = p.rank;
     col.append(name, score, wc, base);
     podium.appendChild(col);
+
+    // staged reveal: rise in, count the score up, sound — winner gets the finale
+    const delay = revealAt[p.rank] ?? 400;
+    setTimeout(() => {
+      col.classList.add('show');
+      countUp(score, p.score, 1000);
+      if (p.rank === 1) {
+        col.classList.add('champion');
+        Sound.play('fanfare');
+        confettiBurst(220);
+        setTimeout(() => confettiBurst(140), 650);
+      } else {
+        Sound.play('reveal');
+      }
+    }, delay);
   }
 
   // ranks 4+ go into a compact list between the podium and the awards.
@@ -249,6 +276,9 @@ function renderPodium(results) {
   if (results.length > 3) {
     const rest = document.createElement('div');
     rest.className = 'rest-board';
+    rest.style.opacity = '0';
+    rest.style.transition = 'opacity 0.6s ease';
+    setTimeout(() => { rest.style.opacity = '1'; }, 2300);
     results.slice(3).forEach((p) => {
       const row = document.createElement('div');
       row.className = 'lb-row';
@@ -279,7 +309,7 @@ function renderAwards(awards, bestPossible) {
   items.forEach(([emoji, label, word, who], i) => {
     const a = document.createElement('div');
     a.className = 'award';
-    a.style.animationDelay = `${1.3 + i * 0.2}s`;
+    a.style.animationDelay = `${2.3 + i * 0.2}s`;
     a.innerHTML = `<div class="a-emoji">${emoji}</div><div>
       <div class="a-label">${label}</div>
       <div class="a-word">${word}</div>
