@@ -43,6 +43,9 @@ jobs:
           ssh -i ~/.ssh/id_deploy -p "$PORT" -o StrictHostKeyChecking=yes \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" bash -lc '
               set -e
+              # load nvm so npm/pm2 are on PATH in this non-interactive shell
+              export NVM_DIR="$HOME/.nvm"
+              [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
               cd "${{ secrets.DEPLOY_PATH }}"
               npm ci --omit=dev
               ( cd wordcombos && npm ci --omit=dev )
