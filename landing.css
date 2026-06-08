@@ -389,6 +389,9 @@ body {
   color: var(--turmeric);
 }
 .foot-sep { margin: 0 0.6rem; opacity: 0.5; }
+.foot-legal { margin-top: 0.5rem; }
+.foot a { color: rgba(255, 244, 232, 0.72); text-decoration: none; }
+.foot a:hover { color: var(--turmeric); text-decoration: underline; }
 
 /* ---- motion-safety ---- */
 @media (prefers-reduced-motion: reduce) {

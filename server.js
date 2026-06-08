@@ -32,6 +32,10 @@ mountBluff(app, io, { port: PORT });
 mountDoodle(app, io, { port: PORT });
 mountCrorepati(app, io, { port: PORT });
 
+// ---- legal pages (clean URLs) ----
+app.get('/privacy', (_q, r) => r.sendFile(join(__dirname, 'privacy.html')));
+app.get('/terms', (_q, r) => r.sendFile(join(__dirname, 'terms.html')));
+
 // ---- assets shared by all games (theme.css, sounds.js, fx.js, avatars.js) ----
 app.use('/shared', express.static(join(__dirname, 'public', 'shared')));
 
