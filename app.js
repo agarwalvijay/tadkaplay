@@ -143,6 +143,18 @@ function fillSVG() {
   return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${GLOW}${r}</svg>`;
 }
 
+// Sur: an equalizer of sound bars dancing under a music note.
+function surSVG() {
+  const heights = [42, 72, 56, 88, 50, 78, 46];
+  let r = '';
+  heights.forEach((h, i) => {
+    const x = 28 + i * 22;
+    r += `<rect x="${x}" y="${126 - h}" width="14" height="${h}" rx="7" fill="${i % 2 ? 'var(--accent2)' : 'var(--accent)'}" filter="url(#g)"/>`;
+  });
+  r += `<text x="100" y="42" text-anchor="middle" font-size="26">🎵</text>`;
+  return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${GLOW}${r}</svg>`;
+}
+
 function artFor(g) {
   switch (g.gfx) {
     case 'wordboard': return wordBoardSVG();
@@ -151,6 +163,7 @@ function artFor(g) {
     case 'crorepati': return crorepatiSVG();
     case 'spectrum': return spectrumSVG();
     case 'fill': return fillSVG();
+    case 'sur': return surSVG();
     default: return patternSVG();
   }
 }

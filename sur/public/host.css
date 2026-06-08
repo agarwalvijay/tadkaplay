@@ -1,0 +1,27 @@
+/* Sur host — the band */
+.play-head { display: flex; align-items: center; justify-content: center; gap: 1.6rem; flex-wrap: wrap; }
+.phase-banner {
+  font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(1.8rem, 5vw, 3.4rem); text-align: center;
+  background: linear-gradient(92deg, var(--yellow), var(--pink) 45%, var(--cyan));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+.band {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.2rem; width: 100%; max-width: 1100px; margin: 2rem auto 0;
+}
+.band-card {
+  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+  padding: 1.2rem 0.8rem; border-radius: 22px;
+  background: var(--glass); border: 1px solid var(--glass-line);
+  transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.band-card .avatar { width: 76px; height: 76px; font-size: 3rem; }
+.band-card .inst { font-size: 2rem; }
+.band-card .bname { font-weight: 600; font-size: 1.05rem; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.band-card.playing { transform: translateY(-6px) scale(1.06); box-shadow: 0 0 36px -6px var(--cyan); background: rgba(76,201,240,0.14); }
+.band-card.spotlight {
+  box-shadow: 0 0 0 3px var(--yellow) inset, 0 0 50px -6px var(--yellow);
+  background: rgba(255,210,63,0.16); animation: pulse-glow 1.4s infinite;
+}
+.band-card.offline { opacity: 0.45; }

@@ -79,6 +79,20 @@ export const GAMES = [
     spice: 2,
     meta: ['👥 3–10', '😂 Party'],
   },
+  {
+    id: 'sur',
+    title: 'Sur',
+    tagline: 'Make music together.',
+    description: 'Each phone becomes a desi instrument — tabla, sitar, bansuri, dholak — and the whole room jams live over a beat. Then vote for the best musician.',
+    icon: '🎵',
+    accent: '#ffb000',
+    accent2: '#ff006e',
+    gfx: 'sur',
+    status: 'live',
+    path: '/sur/host',
+    spice: 1,
+    meta: ['👥 2–10', '🎶 Music'],
+  },
 
   // -------- on the workbench --------
   {

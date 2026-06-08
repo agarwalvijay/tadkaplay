@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sur — Host</title>
+  <link rel="stylesheet" href="/shared/theme.css" />
+  <link rel="stylesheet" href="/shared/lobby.css" />
+  <link rel="stylesheet" href="skin.css" />
+  <link rel="stylesheet" href="host.css" />
+  <script type="module" src="/shared/boot.js"></script>
+</head>
+<body>
+  <a class="home-btn" href="/" title="Tadka Play home" aria-label="Home">🏠</a>
+
+  <!-- LOBBY -->
+  <section id="screen-lobby" class="screen">
+    <header class="brand">
+      <h1 class="display"><span class="title-gradient">SUR</span></h1>
+      <p class="tagline">Make music together. 🎶</p>
+    </header>
+    <div id="preStart" class="center-stack">
+      <button class="btn cyan big-start" id="createBtn">Start a Game ▶</button>
+    </div>
+    <div id="lobbyBody" class="lobby hidden">
+      <div class="join-panel glass">
+        <h2>Join on your phone</h2>
+        <div class="qr-wrap"><img id="qrImg" alt="Join QR code" /></div>
+        <div class="join-info">
+          <div class="join-url" id="joinUrl"></div>
+          <div class="room-code"><span class="rc-label">ROOM CODE</span><span class="rc-code" id="roomCode">----</span></div>
+        </div>
+      </div>
+      <div class="players-panel">
+        <div class="players-head">
+          <h2>Players <span class="count-badge" id="playerCount">0</span></h2>
+          <button class="btn green" id="startGameBtn" disabled>Start Jam ▶</button>
+        </div>
+        <p class="status-line" style="opacity:.8">Everyone gets a desi instrument when the jam starts 🎵</p>
+        <div class="player-grid" id="lobbyPlayers"></div>
+        <p class="empty-hint" id="emptyHint">Waiting for players to join…</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAY -->
+  <section id="screen-play" class="screen hidden">
+    <div class="play-head">
+      <div class="phase-banner" id="phaseBanner">🎶 JAM TIME</div>
+      <div class="timer-wrap" id="timer">
+        <svg viewBox="0 0 120 120" class="timer-ring"><circle cx="60" cy="60" r="52" class="ring-bg"/><circle cx="60" cy="60" r="52" class="ring-fg" id="ring"/></svg>
+        <div class="timer-text" id="timeText">30</div>
+      </div>
+    </div>
+    <div class="band" id="band"></div>
+    <div class="progress hidden" id="voteWrap"><span id="voteProg">0 / 0</span>&nbsp;voted</div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="screen-results" class="screen hidden">
+    <h1 class="display results-title"><span class="title-gradient">RESULTS</span></h1>
+    <div class="scoreboard" id="scoreboard"></div>
+    <button class="btn cyan" id="playAgainBtn" style="margin-top:1.4rem">Jam Again ↻</button>
+  </section>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="host.js"></script>
+</body>
+</html>
