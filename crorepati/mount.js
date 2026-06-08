@@ -38,11 +38,15 @@ export function mountCrorepati(app, io, { port }) {
 
     const item = g.ladder[g.roundIndex];
     const value = VALUES[Math.min(g.roundIndex, VALUES.length - 1)];
-    g.cur = { ...item, value, answers: new Map(), phase: 'answer', startedAt: Date.now() };
+    // shuffle the options so the correct answer isn't always "A"
+    const order = api.shuffle(item.options.map((_, i) => i));
+    const options = order.map((i) => item.options[i]);
+    const answer = order.indexOf(item.answer);
+    g.cur = { q: item.q, options, answer, value, answers: new Map(), phase: 'answer', startedAt: Date.now() };
 
     api.broadcast('kbc:question', {
       round: g.roundIndex + 1, total: g.ladder.length,
-      q: item.q, options: item.options, value, seconds: ANSWER_SECONDS,
+      q: item.q, options, value, seconds: ANSWER_SECONDS,
     });
     api.toHost('kbc:progress', { answered: 0, total: api.activePlayers().length });
     api.broadcastPlayers();
