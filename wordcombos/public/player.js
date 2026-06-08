@@ -47,7 +47,8 @@ try {
   if (saved.name) $('nameInput').value = saved.name;
   if (saved.avatar) state.avatar = saved.avatar;
 } catch {}
-if (!$('nameInput').value) $('nameInput').value = randomName();
+// no default name — leave the field empty (placeholder). If left blank at
+// join, a random name is used (see joinBtn handler).
 
 // build pickers
 const emojiGrid = $('emojiGrid');

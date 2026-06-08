@@ -19,7 +19,6 @@ function renderPicker() {
 }
 function updatePreview() { const p = $('avatarPreview'); p.textContent = avatar.emoji; p.style.background = `radial-gradient(circle at 30% 25%, #ffffff66, ${avatar.color})`; }
 renderPicker(); updatePreview();
-$('nameInput').value = randomName();
 $('randomName').onclick = () => { $('nameInput').value = randomName(); avatar = randomAvatar(); renderPicker(); updatePreview(); };
 
 const params = new URLSearchParams(location.search);
@@ -36,7 +35,7 @@ $('joinBtn').onclick = () => {
   Sound.unlock();
   const code = $('codeInput').value.trim().toUpperCase();
   if (code.length < 4) return showErr('Enter the 4-letter room code');
-  myName = ($('nameInput').value || 'Player').slice(0, 16);
+  myName = ($('nameInput').value.trim() || randomName()).slice(0, 16);
   socket.emit('player:join', { code, name: myName, avatar, playerId: saved.playerId });
 };
 socket.on('player:joinError', () => showErr('Room not found — check the code.'));
