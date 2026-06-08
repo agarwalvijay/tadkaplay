@@ -1,0 +1,20 @@
+export default {
+  id: 'hollywood',
+  name: 'Hollywood',
+  emoji: '🤠',
+  accent: '#4cc9f0',
+  spice: 1,
+  description: 'Western pop-culture things to doodle.',
+  words: [
+    { word: 'cowboy hat', tier: 1 },
+    { word: 'hamburger', tier: 1 },
+    { word: 'Statue of Liberty', tier: 1 },
+    { word: 'spaceship', tier: 1 },
+    { word: 'lightsaber', tier: 2 },
+    { word: 'superhero cape', tier: 2 },
+    { word: 'dinosaur', tier: 2 },
+    { word: 'haunted house', tier: 3 },
+    { word: 'rock band on stage', tier: 3 },
+    { word: 'wizard casting a spell', tier: 3 },
+  ],
+};

@@ -1,0 +1,11 @@
+/* Bluff host — small bits on top of theme.css + lobby.css */
+.mute-btn {
+  position: fixed; top: 14px; right: 14px; z-index: 50;
+  width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 1.3rem;
+  background: var(--glass); border: 1px solid var(--glass-line); color: #fff;
+  backdrop-filter: blur(8px);
+}
+#screen-lie .center-stack { align-content: center; }
+.opt .opt-meta .tag { padding: 0.15rem 0.55rem; border-radius: 999px; background: rgba(0,0,0,0.3); font-weight: 700; }
+.opt.fooled { box-shadow: 0 0 0 2px var(--hot) inset; }

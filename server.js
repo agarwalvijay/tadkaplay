@@ -12,6 +12,7 @@ import { dirname, join } from 'node:path';
 import os from 'node:os';
 
 import { mountWordCombos } from './wordcombos/mount.js';
+import { mountBluff } from './bluff/mount.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 8080;
@@ -22,7 +23,8 @@ const io = new Server(httpServer);
 
 // ---- mounted games (URL prefix + socket namespace each) ----
 mountWordCombos(app, io, { basePath: '/wordcombos', port: PORT });
-// future games: mountTrivia(app, io, { basePath: '/trivia', port: PORT }); ...
+mountBluff(app, io, { port: PORT });
+// future games: mountDoodle(app, io, { port: PORT }); ...
 
 // ---- assets shared by all games (theme.css, sounds.js, fx.js, avatars.js) ----
 app.use('/shared', express.static(join(__dirname, 'public', 'shared')));

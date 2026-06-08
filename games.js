@@ -36,16 +36,21 @@ export const GAMES = [
     meta: ['👥 2–12', '⏱ 90s rounds'],
   },
 
-  // -------- on the workbench --------
   {
-    id: 'soon-trivia',
-    title: 'Coming Soon',
-    tagline: 'Trivia, but make it chaos.',
-    icon: '🎲',
-    accent: '#ffcf3f',
-    accent2: '#ff7a18',
-    status: 'soon',
+    id: 'bluff',
+    title: 'Bluff',
+    tagline: 'Lie convincingly. Spot the truth.',
+    description: 'Everyone writes a fake answer to an obscure question, then votes for the real one. Fool your friends, find the truth.',
+    icon: '🤥',
+    accent: '#9b5de5',
+    accent2: '#ff006e',
+    status: 'live',
+    path: '/bluff/host',
+    spice: 2,
+    meta: ['👥 3–10', '🃏 Bluffing'],
   },
+
+  // -------- on the workbench --------
   {
     id: 'soon-doodle',
     title: 'Coming Soon',
