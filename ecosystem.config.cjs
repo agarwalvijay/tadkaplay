@@ -9,14 +9,14 @@ module.exports = {
       name: 'tadkaplay',
       script: 'server.js',
       cwd: __dirname,
+      exec_mode: 'fork',   // single Node process (Socket.IO-friendly)
       instances: 1,
       autorestart: true,
       max_memory_restart: '300M',
       env: {
         NODE_ENV: 'production',
-        // Change this if 8080 is taken by another site, then point
-        // nginx (tadkaplay.com) at the same port.
-        PORT: 8080,
+        // 8080 was taken by another site; point nginx (tadkaplay.com) here.
+        PORT: 8123,
       },
     },
   ],
