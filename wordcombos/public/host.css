@@ -110,36 +110,37 @@
 .word-feed { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; max-width: 90vw; z-index: 5; }
 .feed-chip { padding: 0.3rem 0.9rem; border-radius: 999px; font-weight: 600; background: rgba(0,0,0,0.35); border: 1px solid var(--glass-line); animation: pop-in 0.3s both; }
 
-/* results */
-#screen-results { justify-content: flex-start; gap: 1.6rem; }
-.results-title { font-size: clamp(2.5rem, 8vw, 6rem); margin-top: 1vh; }
-.podium { display: flex; align-items: flex-end; justify-content: center; gap: 1.4rem; width: 100%; min-height: 38vh; }
-.podium-col { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; animation: pop-in 0.6s both; }
-.podium-col .avatar { width: clamp(70px, 8vw, 110px); height: clamp(70px, 8vw, 110px); }
-.podium-col .pname { font-weight: 700; font-size: 1.3rem; }
-.podium-col .pscore { font-family: 'Baloo 2'; font-weight: 800; font-size: 1.6rem; color: var(--yellow); }
+/* results — sized to fit one viewport (scales with vh) */
+#screen-results { justify-content: flex-start; gap: clamp(0.7rem, 1.8vh, 1.4rem); }
+.results-title { font-size: clamp(1.9rem, 6vw, 4.5rem); margin-top: 0; }
+.podium { display: flex; align-items: flex-end; justify-content: center; gap: clamp(0.7rem, 2vw, 1.4rem); width: 100%; }
+.podium-col { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; animation: pop-in 0.6s both; }
+.podium-col .avatar { width: clamp(48px, 7vh, 96px); height: clamp(48px, 7vh, 96px); }
+.podium-col .pname { font-weight: 700; font-size: clamp(0.9rem, 1.6vw, 1.3rem); }
+.podium-col .pscore { font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(1.05rem, 1.8vw, 1.6rem); color: var(--yellow); }
 .podium-base {
-  width: clamp(120px, 14vw, 200px); border-radius: 18px 18px 0 0;
-  display: grid; place-items: center; font-family: 'Baloo 2'; font-weight: 800; font-size: 3rem; color: rgba(0,0,0,0.4);
+  width: clamp(92px, 13vw, 190px); border-radius: 18px 18px 0 0;
+  display: grid; place-items: center; font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(1.5rem, 3vw, 3rem); color: rgba(0,0,0,0.4);
   box-shadow: var(--shadow);
 }
-.podium-col.p1 .podium-base { height: 220px; background: linear-gradient(180deg, var(--yellow), var(--orange)); }
-.podium-col.p2 .podium-base { height: 160px; background: linear-gradient(180deg, #e0e7ff, #9fb3ff); }
-.podium-col.p3 .podium-base { height: 120px; background: linear-gradient(180deg, #ffcaa6, #ff8c42); }
-.podium-col.p1 .crown { font-size: 2.4rem; animation: float-up-fade 0s, sway 2s ease-in-out infinite; }
+.podium-col.p1 .podium-base { height: clamp(96px, 19vh, 220px); background: linear-gradient(180deg, var(--yellow), var(--orange)); }
+.podium-col.p2 .podium-base { height: clamp(72px, 14vh, 160px); background: linear-gradient(180deg, #e0e7ff, #9fb3ff); }
+.podium-col.p3 .podium-base { height: clamp(56px, 10vh, 120px); background: linear-gradient(180deg, #ffcaa6, #ff8c42); }
+.podium-col.p1 .crown { font-size: clamp(1.5rem, 2.4vw, 2.4rem); animation: float-up-fade 0s, sway 2s ease-in-out infinite; }
 @keyframes sway { 0%,100%{transform:rotate(-8deg)} 50%{transform:rotate(8deg)} }
 
-.awards { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+.awards { display: flex; gap: clamp(0.5rem, 1.4vw, 1rem); flex-wrap: wrap; justify-content: center; }
 .award {
-  display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem 1.4rem; border-radius: 18px;
+  display: flex; align-items: center; gap: 0.7rem;
+  padding: clamp(0.45rem, 1.1vh, 0.8rem) clamp(0.85rem, 1.5vw, 1.4rem); border-radius: 16px;
   background: var(--glass); border: 1px solid var(--glass-line); animation: pop-in 0.5s both;
 }
-.award .a-emoji { font-size: 2rem; }
-.award .a-label { font-size: 0.8rem; opacity: 0.7; letter-spacing: 1px; text-transform: uppercase; }
-.award .a-word { font-family: 'Baloo 2'; font-weight: 800; font-size: 1.3rem; text-transform: uppercase; }
-.award .a-by { font-size: 0.9rem; opacity: 0.8; }
-.grid-fact { opacity: 0.85; font-size: 1.15rem; text-align: center; }
+.award .a-emoji { font-size: clamp(1.5rem, 2.4vw, 2rem); }
+.award .a-label { font-size: 0.75rem; opacity: 0.7; letter-spacing: 1px; text-transform: uppercase; }
+.award .a-word { font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(1.05rem, 1.6vw, 1.3rem); text-transform: uppercase; }
+.award .a-by { font-size: 0.85rem; opacity: 0.8; }
+.grid-fact { opacity: 0.85; font-size: clamp(0.9rem, 1.6vw, 1.15rem); text-align: center; }
 .grid-fact b { color: var(--lime); }
 
 /* small leaderboard rows below podium for ranks 4+ */
-.rest-board { width: 100%; max-width: 760px; display: flex; flex-direction: column; gap: 0.4rem; }
+.rest-board { width: 100%; max-width: 760px; display: flex; flex-direction: column; gap: 0.4rem; max-height: 22vh; overflow-y: auto; }
