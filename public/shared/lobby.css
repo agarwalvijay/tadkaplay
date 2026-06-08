@@ -57,6 +57,9 @@
 .player-card.ready { box-shadow: 0 0 0 3px var(--lime) inset; }
 .player-card.ready .pstatus { color: var(--lime); opacity: 1; font-weight: 600; }
 .player-card.done { box-shadow: 0 0 0 3px var(--cyan) inset; }
+/* a player whose device dropped — kept on the board, greyed out */
+.player-card.offline { opacity: 0.5; box-shadow: none; }
+.player-card.offline .pstatus { color: var(--pink); opacity: 0.9; font-weight: 600; }
 
 /* pack picker chips */
 .packs { display: flex; flex-wrap: wrap; gap: 0.6rem; }
@@ -124,5 +127,6 @@
 .sb-row .sb-name { font-weight: 600; font-size: 1.3rem; }
 .sb-row .sb-score { font-family: 'Baloo 2'; font-weight: 800; font-size: 1.6rem; color: var(--yellow); text-align: right; }
 .sb-row.winner { background: linear-gradient(100deg, rgba(255,210,63,0.22), rgba(255,93,143,0.18)); box-shadow: 0 0 0 2px var(--yellow) inset; }
+.sb-row.offline { opacity: 0.55; }
 .sb-row.winner .crown { font-size: 1.4rem; }
 .results-title { font-size: clamp(2.4rem, 8vw, 5.5rem); margin-bottom: 0.4rem; }

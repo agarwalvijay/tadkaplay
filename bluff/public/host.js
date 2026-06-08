@@ -78,11 +78,12 @@ socket.on('room:players', ({ players }) => {
     const grid = $('lobbyPlayers'); grid.innerHTML = '';
     $('emptyHint').classList.toggle('hidden', players.length > 0);
     for (const p of players) {
+      const off = p.connected === false;
       const card = document.createElement('div');
-      card.className = 'player-card' + (p.ready ? ' ready' : '');
-      card.appendChild(avatarEl(p.avatar));
+      card.className = 'player-card' + (p.ready ? ' ready' : '') + (off ? ' offline' : '');
+      card.appendChild(avatarEl(p.avatar, off ? 'offline' : ''));
       const n = document.createElement('div'); n.className = 'pname'; n.textContent = p.name;
-      const s = document.createElement('div'); s.className = 'pstatus'; s.textContent = p.ready ? '✓ Ready' : 'waiting…';
+      const s = document.createElement('div'); s.className = 'pstatus'; s.textContent = off ? 'away' : (p.ready ? '✓ Ready' : 'waiting…');
       card.append(n, s); grid.appendChild(card);
     }
   }
@@ -158,13 +159,14 @@ socket.on('game:over', ({ results }) => {
   clearInterval(timerInt);
   const sb = $('scoreboard'); sb.innerHTML = '';
   results.forEach((p, i) => {
+    const off = p.connected === false;
     const row = document.createElement('div');
-    row.className = 'sb-row' + (i === 0 ? ' winner' : '');
+    row.className = 'sb-row' + (i === 0 ? ' winner' : '') + (off ? ' offline' : '');
     row.style.animationDelay = `${i * 0.12}s`;
     const rank = document.createElement('div'); rank.className = 'rank'; rank.textContent = i === 0 ? '👑' : '#' + (i + 1);
     const name = document.createElement('div'); name.className = 'sb-name'; name.textContent = p.name;
     const score = document.createElement('div'); score.className = 'sb-score'; score.textContent = p.score.toLocaleString();
-    row.append(rank, avatarEl(p.avatar), name, score);
+    row.append(rank, avatarEl(p.avatar, off ? 'offline' : ''), name, score);
     sb.appendChild(row);
   });
   Sound.play('drumroll');
