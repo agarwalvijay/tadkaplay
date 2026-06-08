@@ -25,7 +25,10 @@ $('randomName').onclick = () => { $('nameInput').value = randomName(); avatar = 
 const params = new URLSearchParams(location.search);
 if (params.get('room')) $('codeInput').value = params.get('room').toUpperCase();
 
-let myId = null, myName = '', ready = false, myChoice = null;
+let myId = null, myName = '', ready = false, myChoice = null, joinedCode = null;
+socket.on('connect', () => {
+  if (joinedCode) socket.emit('player:join', { code: joinedCode, name: myName, avatar, playerId: myId });
+});
 const saved = (() => { try { return JSON.parse(localStorage.getItem('kbc_player') || '{}'); } catch { return {}; } })();
 const showErr = (m) => { const e = $('joinError'); e.textContent = m; e.classList.remove('hidden'); };
 
@@ -37,8 +40,8 @@ $('joinBtn').onclick = () => {
   socket.emit('player:join', { code, name: myName, avatar, playerId: saved.playerId });
 };
 socket.on('player:joinError', () => showErr('Room not found — check the code.'));
-socket.on('player:joined', ({ id, name, avatar: av, spectator }) => {
-  myId = id; myName = name;
+socket.on('player:joined', ({ id, code, name, avatar: av, spectator }) => {
+  myId = id; myName = name; joinedCode = code;
   try { localStorage.setItem('kbc_player', JSON.stringify({ playerId: id, name, avatar })); } catch {}
   $('waitAvatar').textContent = av.emoji; $('waitAvatar').style.background = `radial-gradient(circle at 30% 25%, #ffffff66, ${av.color})`;
   $('waitName').textContent = name; $('spectatorNote').classList.toggle('hidden', !spectator);

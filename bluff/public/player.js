@@ -46,8 +46,12 @@ const params = new URLSearchParams(location.search);
 if (params.get('room')) $('codeInput').value = params.get('room').toUpperCase();
 
 // --- join ----------------------------------------------------------------
-let myId = null, myName = '', ready = false;
+let myId = null, myName = '', ready = false, joinedCode = null;
 let myLie = '', myVoteIdx = null, iKnewIt = false;
+// re-join automatically if the socket reconnects (e.g. after a screen lock)
+socket.on('connect', () => {
+  if (joinedCode) socket.emit('player:join', { code: joinedCode, name: myName, avatar, playerId: myId });
+});
 
 const saved = (() => { try { return JSON.parse(localStorage.getItem('bluff_player') || '{}'); } catch { return {}; } })();
 
@@ -62,8 +66,8 @@ $('joinBtn').onclick = () => {
 };
 
 socket.on('player:joinError', () => showErr('Room not found — check the code.'));
-socket.on('player:joined', ({ id, name, avatar: av, spectator }) => {
-  myId = id; myName = name;
+socket.on('player:joined', ({ id, code, name, avatar: av, spectator }) => {
+  myId = id; myName = name; joinedCode = code;
   try { localStorage.setItem('bluff_player', JSON.stringify({ playerId: id, name, avatar })); } catch {}
   $('waitAvatar').textContent = av.emoji;
   $('waitAvatar').style.background = `radial-gradient(circle at 30% 25%, #ffffff66, ${av.color})`;

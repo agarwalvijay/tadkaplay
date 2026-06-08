@@ -16,11 +16,13 @@ function avatarEl(av, cls = '') { const d = document.createElement('div'); d.cla
 
 // --- lobby ---
 let selectedPack = null;
+let myRoom = null;
+socket.on('connect', () => { if (myRoom) socket.emit('host:reclaim', { code: myRoom }); });
 $('createBtn').onclick = () => { Sound.unlock(); socket.emit('host:create'); };
 socket.on('host:created', ({ code, joinUrl, qr }) => {
   $('preStart').classList.add('hidden'); $('lobbyBody').classList.remove('hidden');
   $('qrImg').src = qr; $('joinUrl').textContent = joinUrl.replace(/^https?:\/\//, ''); $('roomCode').textContent = code;
-  loadPacks(); window.ttrack?.('game_created');
+  myRoom = code; loadPacks(); window.ttrack?.('game_created');
 });
 async function loadPacks() {
   try {

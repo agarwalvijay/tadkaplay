@@ -23,6 +23,7 @@ import {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROUND_SECONDS = Number(process.env.ROUND_SECONDS || 90);
 const COUNTDOWN_SECONDS = 3;
+const HOST_GRACE_MS = 60000; // brief host disconnect (screen lock) shouldn't kill the room
 
 function lanAddress() {
   const ifaces = os.networkInterfaces();
@@ -243,6 +244,20 @@ export function mountWordCombos(app, io, { basePath = '/wordcombos', port = proc
       if (room && room.hostId === socket.id) startGame(room);
     });
 
+    // host's socket reconnected (e.g. after a screen lock) — re-own the room
+    socket.on('host:reclaim', ({ code } = {}) => {
+      const room = rooms.get(String(code || '').toUpperCase());
+      if (!room) { socket.emit('host:reclaimFailed'); return; }
+      clearTimeout(room.hostGraceTimer);
+      room.hostGone = false;
+      room.hostId = socket.id;
+      role = 'host';
+      roomCode = room.code;
+      socket.join(room.code);
+      socket.emit('host:reclaimed', { code: room.code });
+      broadcastPlayers(room);
+    });
+
     socket.on('host:playAgain', () => {
       const room = rooms.get(roomCode);
       if (room && room.hostId === socket.id) {
@@ -372,10 +387,15 @@ export function mountWordCombos(app, io, { basePath = '/wordcombos', port = proc
       const room = rooms.get(roomCode);
       if (!room) return;
       if (role === 'host' && room.hostId === socket.id) {
-        nsp.to(room.code).emit('host:left');
-        clearTimeout(room.timer);
-        clearInterval(room.tick);
-        rooms.delete(room.code);
+        room.hostGone = true;
+        clearTimeout(room.hostGraceTimer);
+        room.hostGraceTimer = setTimeout(() => {
+          if (!room.hostGone) return;
+          nsp.to(room.code).emit('host:left');
+          clearTimeout(room.timer);
+          clearInterval(room.tick);
+          rooms.delete(room.code);
+        }, HOST_GRACE_MS);
         return;
       }
       const player = room.players.get(socket.data.playerKey);

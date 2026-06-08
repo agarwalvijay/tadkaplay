@@ -35,6 +35,7 @@ export function baseUrlFromSocket(socket, port) {
 }
 
 const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no ambiguous chars
+const HOST_GRACE_MS = 60000; // a brief host disconnect (screen lock) shouldn't kill the room
 const shuffle = (arr) => {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -155,6 +156,20 @@ export class GameServer {
         if (room && room.hostId === socket.id) this._startGame(room, payload);
       });
 
+      // host's socket reconnected (e.g. after a screen lock) — re-own the room
+      socket.on('host:reclaim', ({ code } = {}) => {
+        const room = this.rooms.get(String(code || '').toUpperCase());
+        if (!room) { socket.emit('host:reclaimFailed'); return; }
+        clearTimeout(room.hostGraceTimer);
+        room.hostGone = false;
+        room.hostId = socket.id;
+        socket.data.role = 'host';
+        socket.data.roomCode = room.code;
+        socket.join(room.code);
+        socket.emit('host:reclaimed', { code: room.code, state: room.state });
+        this.broadcastPlayers(room);
+      });
+
       socket.on('host:playAgain', () => {
         const room = this.rooms.get(socket.data.roomCode);
         if (!room || room.hostId !== socket.id) return;
@@ -233,9 +248,16 @@ export class GameServer {
         const room = this.rooms.get(socket.data.roomCode);
         if (!room) return;
         if (socket.data.role === 'host' && room.hostId === socket.id) {
-          this.nsp.to(room.code).emit('host:left');
-          this.opts.onClose(room, this._api(room));
-          this.rooms.delete(room.code);
+          // don't kill the room immediately — give the host time to reconnect
+          // (timers keep running server-side so the game continues meanwhile)
+          room.hostGone = true;
+          clearTimeout(room.hostGraceTimer);
+          room.hostGraceTimer = setTimeout(() => {
+            if (!room.hostGone) return;
+            this.nsp.to(room.code).emit('host:left');
+            this.opts.onClose(room, this._api(room));
+            this.rooms.delete(room.code);
+          }, HOST_GRACE_MS);
           return;
         }
         const player = room.players.get(socket.data.playerKey);

@@ -111,10 +111,16 @@ function showJoinError(msg) {
   Sound.play('error');
 }
 
+// re-join automatically if the socket reconnects (e.g. after a screen lock)
+socket.on('connect', () => {
+  if (state.joinedCode) socket.emit('player:join', { code: state.joinedCode, name: state.myName, avatar: state.avatar, playerId: state.myId });
+});
 socket.on('player:joinError', () => showJoinError("Couldn't find that room. Check the code!"));
 
-socket.on('player:joined', ({ id, name, avatar, state: gameState, spectator }) => {
+socket.on('player:joined', ({ id, code, name, avatar, state: gameState, spectator }) => {
   state.myId = id;
+  state.joinedCode = code;
+  state.myName = name;
   state.spectator = spectator;
   window.ttrack?.('player_joined');
   sessionStorage.setItem('wc_pid', id);

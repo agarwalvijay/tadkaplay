@@ -32,8 +32,11 @@ $('createBtn').addEventListener('click', () => {
 });
 
 let roundSeconds = 90;
+let hostRoom = null;
+socket.on('connect', () => { if (hostRoom) socket.emit('host:reclaim', { code: hostRoom }); });
 socket.on('host:created', ({ code, joinUrl, qr, roundSeconds: rs }) => {
   roundSeconds = rs;
+  hostRoom = code;
   $('qrImg').src = qr;
   $('roomCode').textContent = code;
   $('joinUrl').textContent = joinUrl.replace(/^https?:\/\//, '');

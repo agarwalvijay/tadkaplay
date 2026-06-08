@@ -31,6 +31,9 @@ function avatarEl(av, cls = '') {
 
 // --- lobby ---------------------------------------------------------------
 let selectedPack = null;
+let myRoom = null;
+// reclaim the room if our socket reconnects (e.g. after a screen lock)
+socket.on('connect', () => { if (myRoom) socket.emit('host:reclaim', { code: myRoom }); });
 $('createBtn').onclick = () => { Sound.unlock(); socket.emit('host:create'); };
 
 socket.on('host:created', ({ code, joinUrl, qr }) => {
@@ -39,6 +42,7 @@ socket.on('host:created', ({ code, joinUrl, qr }) => {
   $('qrImg').src = qr;
   $('joinUrl').textContent = joinUrl.replace(/^https?:\/\//, '');
   $('roomCode').textContent = code;
+  myRoom = code;
   loadPacks();
   window.ttrack?.('game_created');
 });
