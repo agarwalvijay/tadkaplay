@@ -5,6 +5,9 @@ export const Sound = (() => {
   let ctx = null;
   let master = null;
   let muted = false;
+  // background music state
+  let musicGain = null, mTimer = null, mStep = 0, mNextTime = 0, mPlaying = false;
+  const MUSIC_VOL = 0.85;
 
   function ensure() {
     if (!ctx) {
@@ -113,11 +116,97 @@ export const Sound = (() => {
     },
   };
 
+  // ---------------------------------------------------------------------------
+  // Background music — a generative, looping groove for the host screen so the
+  // room is never silent. Pad chords + bright arpeggio + soft kick/hat.
+  // ---------------------------------------------------------------------------
+  const MIDI = (m) => 440 * Math.pow(2, (m - 69) / 12);
+  const PROG = [ // Am – F – C – G (one bar each)
+    { bass: 45, pad: [57, 60, 64], arp: [69, 72, 76, 72] },
+    { bass: 41, pad: [53, 57, 60], arp: [65, 69, 72, 69] },
+    { bass: 48, pad: [60, 64, 67], arp: [72, 76, 79, 76] },
+    { bass: 43, pad: [55, 59, 62], arp: [67, 71, 74, 71] },
+  ];
+  const BPM = 100;
+  const EIGHTH = 30 / BPM;              // seconds per eighth note (0.3s)
+  const STEPS_PER_BAR = 8;
+  const BAR_DUR = STEPS_PER_BAR * EIGHTH;
+  const TOTAL_STEPS = STEPS_PER_BAR * PROG.length;
+
+  function mTone(freq, { type = 'sine', dur = 0.3, gain = 0.1, attack = 0.01, when = 0 }) {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, when);
+    g.gain.setValueAtTime(0.0001, when);
+    g.gain.linearRampToValueAtTime(gain, when + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+    osc.connect(g).connect(musicGain);
+    osc.start(when); osc.stop(when + dur + 0.02);
+  }
+  function mKick(t) {
+    const osc = ctx.createOscillator(); const g = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(120, t);
+    osc.frequency.exponentialRampToValueAtTime(45, t + 0.12);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(0.18, t + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+    osc.connect(g).connect(musicGain);
+    osc.start(t); osc.stop(t + 0.2);
+  }
+  function mHat(t) {
+    const dur = 0.04;
+    const buf = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    const f = ctx.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 7000;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.05, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    src.connect(f).connect(g).connect(musicGain);
+    src.start(t); src.stop(t + dur);
+  }
+  function scheduleStep(time) {
+    const bar = Math.floor(mStep / STEPS_PER_BAR) % PROG.length;
+    const s = mStep % STEPS_PER_BAR;
+    const ch = PROG[bar];
+    if (s === 0) {
+      ch.pad.forEach((m) => mTone(MIDI(m), { type: 'triangle', dur: BAR_DUR * 0.95, gain: 0.045, attack: 0.08, when: time }));
+      mTone(MIDI(ch.bass), { type: 'sine', dur: BAR_DUR * 0.9, gain: 0.11, attack: 0.02, when: time });
+      mKick(time);
+    }
+    if (s === 4) { mKick(time); mTone(MIDI(ch.bass), { type: 'sine', dur: EIGHTH * 3, gain: 0.08, when: time }); }
+    if (s % 2 === 1) mHat(time);
+    mTone(MIDI(ch.arp[s % ch.arp.length] + 12), { type: 'triangle', dur: EIGHTH * 1.4, gain: 0.05, attack: 0.005, when: time });
+  }
+  function scheduler() {
+    if (!ctx) return;
+    while (mNextTime < ctx.currentTime + 0.25) {
+      scheduleStep(mNextTime);
+      mNextTime += EIGHTH;
+      mStep = (mStep + 1) % TOTAL_STEPS;
+    }
+  }
+
   return {
     unlock() { ensure(); },
     play(name, ...args) { effects[name]?.(...args); },
-    toggleMute() { muted = !muted; return muted; },
+    startMusic() {
+      ensure();
+      if (!musicGain) { musicGain = ctx.createGain(); musicGain.gain.value = muted ? 0 : MUSIC_VOL; musicGain.connect(master); }
+      if (mPlaying) return;
+      mPlaying = true; mStep = 0; mNextTime = ctx.currentTime + 0.1;
+      mTimer = setInterval(scheduler, 60);
+    },
+    stopMusic() { mPlaying = false; if (mTimer) { clearInterval(mTimer); mTimer = null; } },
+    toggleMute() {
+      muted = !muted;
+      if (musicGain) musicGain.gain.setTargetAtTime(muted ? 0 : MUSIC_VOL, ctx.currentTime, 0.05);
+      return muted;
+    },
     isMuted() { return muted; },
-    setMute(v) { muted = v; },
+    setMute(v) { muted = v; if (musicGain) musicGain.gain.setTargetAtTime(v ? 0 : MUSIC_VOL, ctx.currentTime, 0.05); },
   };
 })();

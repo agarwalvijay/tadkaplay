@@ -34,7 +34,7 @@ let selectedPack = null;
 let myRoom = null;
 // reclaim the room if our socket reconnects (e.g. after a screen lock)
 socket.on('connect', () => { if (myRoom) socket.emit('host:reclaim', { code: myRoom }); });
-$('createBtn').onclick = () => { Sound.unlock(); socket.emit('host:create'); };
+$('createBtn').onclick = () => { Sound.unlock(); Sound.startMusic(); socket.emit('host:create'); };
 
 socket.on('host:created', ({ code, joinUrl, qr }) => {
   $('preStart').classList.add('hidden');

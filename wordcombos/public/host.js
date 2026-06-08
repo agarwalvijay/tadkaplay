@@ -26,6 +26,7 @@ $('muteBtn').addEventListener('click', () => {
 // ---- create / start ----
 $('createBtn').addEventListener('click', () => {
   Sound.unlock();
+  Sound.startMusic();
   socket.emit('host:create');
   $('preStart').classList.add('hidden');
   $('lobbyBody').classList.remove('hidden');
