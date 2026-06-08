@@ -1,0 +1,397 @@
+/* =====================================================================
+   TADKA PLAY — tadkaplay.com
+   Desi-spice aesthetic: तड़का = the sizzling tempering of spices.
+   Warm charcoal-maroon base, saffron/chili/turmeric heat, rising embers,
+   rounded Devanagari display type.
+   ===================================================================== */
+
+:root {
+  --bg0: #1a0a06;
+  --bg1: #2a0f0a;
+  --paper: #fff4e8;
+
+  --chili:    #ff3b30;
+  --chili-dk: #e63946;
+  --saffron:  #ffb000;
+  --turmeric: #ffcf3f;
+  --paprika:  #ff7a18;
+  --mint:     #2dd4a7;
+
+  --glass: rgba(255, 240, 224, 0.06);
+  --glass-line: rgba(255, 240, 224, 0.14);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  color: var(--paper);
+  background:
+    radial-gradient(900px 620px at 10% -8%, rgba(255, 176, 0, 0.30), transparent 58%),
+    radial-gradient(820px 600px at 96% -2%, rgba(255, 59, 48, 0.28), transparent 55%),
+    radial-gradient(1200px 820px at 50% 122%, rgba(255, 122, 24, 0.28), transparent 60%),
+    linear-gradient(170deg, var(--bg0), var(--bg1));
+  background-attachment: fixed;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ---- hot "pan" glow at the bottom (the tadka sizzles here) ---- */
+.grid-floor {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 40vh;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 100% at 50% 130%,
+    rgba(255, 122, 24, 0.45), rgba(255, 59, 48, 0.18) 40%, transparent 70%);
+  animation: pan-glow 4.5s ease-in-out infinite;
+}
+@keyframes pan-glow { 0%, 100% { opacity: 0.75; } 50% { opacity: 1; } }
+
+/* ---- film grain overlay ---- */
+.grain {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  opacity: 0.05; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- rising embers / popping spices ---- */
+.floaters { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.floaters .ember {
+  position: absolute;
+  width: var(--s, 6px); height: var(--s, 6px);
+  border-radius: 50%;
+  background: var(--c, var(--saffron));
+  box-shadow: 0 0 10px var(--c, var(--saffron));
+  opacity: 0;
+  animation: rise-ember var(--d, 9s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+.floaters .glyph {
+  position: absolute;
+  font-size: var(--s, 1.6rem);
+  opacity: 0.16;
+  user-select: none;
+  animation: rise-ember var(--d, 16s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes rise-ember {
+  0%   { transform: translateY(106vh) translateX(0) scale(0.7); opacity: 0; }
+  12%  { opacity: 0.9; }
+  85%  { opacity: 0.7; }
+  100% { transform: translateY(-12vh) translateX(var(--drift, 20px)) scale(1); opacity: 0; }
+}
+
+/* ---- marquee header ---- */
+.marquee {
+  position: relative; z-index: 2;
+  text-align: center;
+  padding: clamp(3rem, 9vh, 6.5rem) 1.4rem 1.2rem;
+}
+/* tempering-pan logo mark */
+.logo {
+  width: clamp(74px, 11vw, 122px);
+  height: auto;
+  flex: none;
+  margin: 0;
+  overflow: visible;
+  filter: drop-shadow(0 7px 14px rgba(0, 0, 0, 0.45));
+  animation: logo-float 4.5s ease-in-out infinite;
+}
+@keyframes logo-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.logo .seed { animation: pop-seed 1.9s ease-in-out infinite; }
+@keyframes pop-seed {
+  0%   { transform: translateY(8px);  opacity: 0; }
+  25%  { opacity: 1; }
+  70%  { opacity: 0.9; }
+  100% { transform: translateY(-26px); opacity: 0; }
+}
+
+.kicker {
+  display: inline-block;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--turmeric);
+  padding: 0.32rem 1.1rem;
+  border: 1px solid rgba(255, 176, 0, 0.4);
+  border-radius: 999px;
+  box-shadow: 0 0 18px rgba(255, 176, 0, 0.2), inset 0 0 14px rgba(255, 176, 0, 0.1);
+}
+
+/* brand row — logo to the left of the wordmark */
+.brandrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 2.4vw, 1.5rem);
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+/* the hero wordmark — English letters styled like Devanagari (shirorekha) */
+.deva {
+  font-family: 'Khand', system-ui, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: clamp(2.6rem, 11vw, 6.6rem);
+  line-height: 1.04;
+  white-space: nowrap;
+  display: inline-flex;
+  gap: 0.3em;
+  margin: 0;
+  filter: drop-shadow(0 3px 2px rgba(35, 5, 0, 0.4));
+  animation: sizzle 6s ease-in-out infinite;
+  transform-origin: center;
+}
+.deva .word {
+  display: inline-block;
+  background: linear-gradient(180deg, #ffae2b 0%, #ff6a14 52%, #d81f2b 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  text-shadow: 0 2px 9px rgba(35, 5, 0, 0.4);
+}
+@keyframes sizzle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50%      { transform: rotate(0.4deg) scale(1.006); }
+}
+
+/* the Latin wordmark — TADKA PLAY */
+.wordmark {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  font-size: clamp(1.1rem, 4.4vw, 2.1rem);
+  margin-top: -0.2rem;
+  color: var(--paper);
+  text-shadow: 0 2px 18px rgba(255, 122, 24, 0.5);
+}
+.wordmark .play-word { color: var(--mint); }
+
+.subtitle {
+  max-width: 40ch;
+  margin: 1rem auto 0;
+  font-size: clamp(0.98rem, 2.4vw, 1.18rem);
+  color: rgba(255, 244, 232, 0.78);
+  line-height: 1.55;
+}
+
+/* ---- card grid ---- */
+.grid {
+  position: relative; z-index: 2;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 2.4rem clamp(1rem, 4vw, 3rem) 5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(282px, 1fr));
+  gap: 1.6rem;
+}
+
+.card {
+  position: relative;
+  display: flex; flex-direction: column;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
+  border: 1px solid var(--glass-line);
+  overflow: hidden;
+  isolation: isolate;
+  text-decoration: none;
+  color: inherit;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.18s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  /* entrance */
+  opacity: 0;
+  animation: rise 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card.live { cursor: pointer; }
+.card.live:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.6), 0 0 50px -12px var(--accent);
+}
+
+/* rotating neon border that ignites on hover */
+@property --ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.card.live::after {
+  content: '';
+  position: absolute; inset: 0; border-radius: inherit; padding: 1.6px;
+  background: conic-gradient(from var(--ang),
+    transparent 12%, var(--accent), var(--accent2), transparent 88%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 5;
+}
+.card.live:hover::after { opacity: 1; animation: spin 3.5s linear infinite; }
+@keyframes spin { to { --ang: 360deg; } }
+
+/* ---- hero "screen" ---- */
+.art {
+  position: relative;
+  height: 158px;
+  display: grid; place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(130% 120% at 50% -10%, color-mix(in srgb, var(--accent) 60%, transparent), transparent 68%),
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--accent) 32%, #0a0612),
+      color-mix(in srgb, var(--accent2) 40%, #0a0612));
+  background-size: 100% 100%, 220% 220%;
+  animation: art-drift 9s ease-in-out infinite alternate;
+}
+@keyframes art-drift { to { background-position: 0 0, 100% 100%; } }
+
+/* CRT scanlines */
+.art::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 2;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.20) 0 2px, transparent 2px 4px);
+  mix-blend-mode: overlay; opacity: 0.55; pointer-events: none;
+}
+/* diagonal shine sweep on hover */
+.art::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.30) 50%, transparent 60%);
+  transform: translateX(-130%); transition: transform 0.7s ease; pointer-events: none;
+}
+.card.live:hover .art::after { transform: translateX(130%); }
+
+/* the SVG hero graphic */
+.art-gfx {
+  position: absolute; inset: 0; z-index: 1;
+  width: 100%; height: 100%;
+  filter: drop-shadow(0 4px 14px rgba(0,0,0,0.4));
+  transition: transform 0.3s ease;
+}
+.card.live:hover .art-gfx { transform: scale(1.06); }
+
+/* small emoji identity chip in the corner */
+.art-chip {
+  position: absolute; top: 0.8rem; left: 0.8rem; z-index: 3;
+  width: 40px; height: 40px; border-radius: 12px;
+  display: grid; place-items: center; font-size: 1.3rem;
+  background: rgba(0, 0, 0, 0.4); border: 1px solid var(--glass-line);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 18px -6px var(--accent);
+}
+
+/* status badge floats on the art */
+.badge {
+  position: absolute; top: 0.85rem; right: 0.85rem; z-index: 3;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: 'Baloo 2', sans-serif; font-weight: 800;
+  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.3rem 0.65rem; border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+.badge.live {
+  color: #06241c;
+  background: linear-gradient(135deg, var(--mint), var(--turmeric));
+  box-shadow: 0 0 18px rgba(45, 212, 167, 0.5);
+}
+.badge.live .dot {
+  width: 7px; height: 7px; border-radius: 50%; background: #06241c;
+  animation: pulse 1.3s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.45); opacity: 0.4; } }
+.badge.soon {
+  color: rgba(255, 244, 232, 0.85);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--glass-line);
+}
+
+/* ---- body ---- */
+.body {
+  display: flex; flex-direction: column; gap: 0.5rem; flex: 1;
+  padding: 1.15rem 1.3rem 1.35rem;
+}
+.card h2 {
+  font-family: 'Baloo 2', sans-serif; font-weight: 800;
+  font-size: 1.5rem; line-height: 1.05;
+}
+.tagline {
+  color: rgba(255, 244, 232, 0.74);
+  font-size: 0.97rem; line-height: 1.4;
+}
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-top: 0.2rem; }
+.chip {
+  font-size: 0.76rem; font-weight: 500;
+  padding: 0.28rem 0.65rem; border-radius: 999px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--glass-line);
+  color: rgba(255, 244, 232, 0.85);
+}
+
+/* spice-level meter 🌶️ */
+.spice {
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  font-size: 0.78rem; font-weight: 600;
+  padding: 0.24rem 0.6rem 0.24rem 0.5rem; border-radius: 999px;
+  background: rgba(255, 59, 48, 0.12);
+  border: 1px solid rgba(255, 59, 48, 0.35);
+  color: var(--turmeric);
+}
+.spice .pepper { filter: grayscale(1) opacity(0.35); font-size: 0.9rem; }
+.spice .pepper.on { filter: none; }
+
+.play {
+  margin-top: auto;
+  display: flex; align-items: center; justify-content: center; gap: 0.55rem;
+  font-family: 'Baloo 2', sans-serif; font-weight: 800;
+  letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.95rem;
+  color: #0a0612;
+  padding: 0.72rem 1rem; border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  box-shadow: 0 12px 26px -10px var(--accent);
+  transition: filter 0.15s ease;
+}
+.card.live:hover .play { filter: brightness(1.1) saturate(1.08); }
+.play .arrow { transition: transform 0.2s ease; }
+.card.live:hover .play .arrow { transform: translateX(4px); }
+
+/* ---- coming-soon cards ---- */
+.card.soon { filter: saturate(0.6); }
+.card.soon .art { animation: none; }
+.card.soon .art-emoji { filter: grayscale(0.45) drop-shadow(0 4px 12px rgba(0,0,0,0.5)); }
+.card.soon h2, .card.soon .tagline { opacity: 0.85; }
+.soon-note {
+  margin-top: auto;
+  text-align: center;
+  font-family: 'Baloo 2', sans-serif; font-weight: 700;
+  font-size: 0.84rem; letter-spacing: 0.04em;
+  color: rgba(253, 247, 255, 0.5);
+  padding: 0.7rem; border: 1px dashed var(--glass-line); border-radius: 14px;
+}
+
+/* ---- footer ---- */
+.foot {
+  position: relative; z-index: 2;
+  text-align: center;
+  padding: 1.4rem 1.4rem 3rem;
+  color: rgba(255, 244, 232, 0.5);
+  font-size: 0.88rem;
+}
+.foot .domain {
+  font-family: 'Baloo 2', sans-serif; font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--turmeric);
+}
+.foot-sep { margin: 0 0.6rem; opacity: 0.5; }
+
+/* ---- motion-safety ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .card { opacity: 1; }
+}
