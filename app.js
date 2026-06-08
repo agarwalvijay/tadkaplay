@@ -116,12 +116,29 @@ function crorepatiSVG() {
   return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${defs}${r}</svg>`;
 }
 
+// Andaaza: a spectrum bar with a bullseye target and a couple of guess dots.
+function spectrumSVG() {
+  const defs = `<defs>
+    <linearGradient id="spec" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--accent)"/><stop offset="1" stop-color="var(--accent2)"/></linearGradient>
+    <filter id="g" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>`;
+  const x = 18 + 164 * 0.62;
+  let r = `<rect x="18" y="78" width="164" height="20" rx="10" fill="url(#spec)"/>`;
+  r += `<rect x="${x - 14}" y="74" width="28" height="28" rx="8" fill="rgba(255,255,255,0.28)"/>`;
+  r += `<rect x="${x - 2}" y="66" width="4" height="44" rx="2" fill="#fff" filter="url(#g)"/>`;
+  r += `<text x="${x}" y="56" text-anchor="middle" font-size="22">🎯</text>`;
+  r += `<circle cx="${18 + 164 * 0.38}" cy="88" r="8" fill="#fff" stroke="rgba(0,0,0,0.3)" stroke-width="2"/>`;
+  r += `<circle cx="${18 + 164 * 0.72}" cy="88" r="8" fill="#fff" stroke="rgba(0,0,0,0.3)" stroke-width="2"/>`;
+  return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${defs}${r}</svg>`;
+}
+
 function artFor(g) {
   switch (g.gfx) {
     case 'wordboard': return wordBoardSVG();
     case 'bluff': return bluffSVG();
     case 'doodle': return doodleSVG();
     case 'crorepati': return crorepatiSVG();
+    case 'spectrum': return spectrumSVG();
     default: return patternSVG();
   }
 }

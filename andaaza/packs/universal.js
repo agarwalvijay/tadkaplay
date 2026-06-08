@@ -1,0 +1,20 @@
+export default {
+  id: 'universal',
+  name: 'Universal',
+  emoji: '🌍',
+  accent: '#4cc9f0',
+  spice: 1,
+  description: 'Everyday debates everyone has an opinion on.',
+  spectrums: [
+    { left: 'Overrated 😴', right: 'Underrated 🔥' },
+    { left: 'Useless', right: 'Essential' },
+    { left: 'Weird', right: 'Normal' },
+    { left: 'Forgettable', right: 'Iconic' },
+    { left: 'Guilty pleasure', right: 'Proud of it' },
+    { left: 'Smells awful', right: 'Smells amazing' },
+    { left: 'Casual', right: 'Formal' },
+    { left: 'Underdog', right: 'Favourite' },
+    { left: 'Boring', right: 'Exciting' },
+    { left: 'Cheap', right: 'Luxury' },
+  ],
+};

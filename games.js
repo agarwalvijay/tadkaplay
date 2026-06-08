@@ -51,6 +51,21 @@ export const GAMES = [
     meta: ['👥 3–10', '🃏 Bluffing'],
   },
 
+  {
+    id: 'andaaza',
+    title: 'Andaaza',
+    tagline: 'Read the room. Find the wavelength.',
+    description: 'One player sees a hidden target on a spectrum (Mild ↔ Spicy) and gives a one-word clue; everyone else drags a slider to guess where it is. Closer = more points.',
+    icon: '🔮',
+    accent: '#9b5de5',
+    accent2: '#4cc9f0',
+    gfx: 'spectrum',
+    status: 'live',
+    path: '/andaaza/host',
+    spice: 2,
+    meta: ['👥 3–10', '🎯 Guessing'],
+  },
+
   // -------- on the workbench --------
   {
     id: 'doodle',

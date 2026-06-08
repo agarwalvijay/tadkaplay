@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Andaaza</title>
+  <link rel="stylesheet" href="/shared/theme.css" />
+  <link rel="stylesheet" href="skin.css" />
+  <link rel="stylesheet" href="player.css" />
+  <script type="module" src="/shared/boot.js"></script>
+</head>
+<body class="player-body">
+  <a class="home-btn" href="/" title="Tadka Play home" aria-label="Home">🏠</a>
+
+  <!-- JOIN -->
+  <section id="screen-join" class="pscreen">
+    <h1 class="display join-logo"><span class="title-gradient">ANDAAZA</span></h1>
+    <div class="join-card glass">
+      <label class="field"><span>Room Code</span>
+        <input id="codeInput" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="ABCD" /></label>
+      <div class="field"><span>Your Name</span>
+        <div class="name-row">
+          <input id="nameInput" maxlength="16" autocomplete="off" placeholder="Tap to name yourself" />
+          <button class="dice-btn" id="randomName" title="Random name">🎲</button>
+        </div>
+      </div>
+      <div class="field"><span>Pick Your Vibe</span>
+        <div class="avatar-preview"><div class="avatar big" id="avatarPreview">🦊</div></div>
+        <div class="picker"><div class="emoji-grid" id="emojiGrid"></div><div class="color-row" id="colorRow"></div></div>
+      </div>
+      <button class="btn green join-btn" id="joinBtn">Join Game ▶</button>
+      <p class="join-error hidden" id="joinError"></p>
+    </div>
+  </section>
+
+  <!-- WAIT -->
+  <section id="screen-wait" class="pscreen hidden">
+    <div class="wait-card glass">
+      <div class="avatar big" id="waitAvatar">🦊</div>
+      <h2 id="waitName">You're in!</h2>
+      <p class="wait-sub">Read the room and find the wavelength…</p>
+      <button class="btn green ready-btn" id="readyBtn">I'm Ready! ✋</button>
+      <p class="spectator-note hidden" id="spectatorNote">A round is in progress — you'll join the next one! 👀</p>
+    </div>
+  </section>
+
+  <!-- PLAY -->
+  <section id="screen-play" class="pscreen hidden">
+    <div class="play-card glass">
+      <div class="role" id="role"></div>
+      <div class="clue-box hidden" id="clueBox"></div>
+      <div class="spectrum-mini">
+        <span class="end" id="endLeft"></span>
+        <div class="track" id="track">
+          <div class="tgt hidden" id="tgt"></div>
+          <input type="range" min="0" max="100" value="50" id="slider" class="hidden" />
+        </div>
+        <span class="end" id="endRight"></span>
+      </div>
+      <div class="clue-input hidden" id="clueInput">
+        <input id="clueText" maxlength="28" autocomplete="off" placeholder="Your clue (one word is best!)" />
+        <button class="btn green" id="clueSubmit">Give Clue ▶</button>
+      </div>
+      <button class="btn green hidden" id="guessSubmit">Lock in Guess ▶</button>
+      <p class="locked hidden" id="locked"></p>
+    </div>
+  </section>
+
+  <!-- REVEAL -->
+  <section id="screen-reveal" class="pscreen hidden">
+    <div class="play-card glass center">
+      <div class="reveal-emoji">🎯</div>
+      <div class="reveal-msg" id="revealMsg"></div>
+      <div class="reveal-score" id="revealScore"></div>
+      <p class="sub">Look at the big screen!</p>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="screen-results" class="pscreen hidden">
+    <div class="result-card glass">
+      <div class="rank-big" id="rankBig">#1</div>
+      <div class="avatar big" id="resultAvatar">🦊</div>
+      <h2 id="resultName">You</h2>
+      <div class="result-score" id="resultScore">0</div>
+      <p class="result-wait">Look at the big screen for the winners! 🏆</p>
+    </div>
+  </section>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="player.js"></script>
+</body>
+</html>
