@@ -14,5 +14,8 @@ export default {
     { q: "A group of crows is collectively known as a ___?", a: 'A murder' },
     { q: "What's the groove between your nose and upper lip called?", a: 'The philtrum' },
     { q: "What's the word for the pleasant smell of rain on dry earth?", a: 'Petrichor' },
+    { q: "What's the technical name for the “#” symbol?", a: 'An octothorpe' },
+    { q: "What's the collective noun for a group of owls?", a: 'A parliament' },
+    { q: "What do you call the day before yesterday, in one word?", a: 'Ereyesterday' },
   ],
 };
