@@ -1,0 +1,32 @@
+/* Naam Place Animal Cheez host */
+.mute-btn { position: fixed; top: 14px; right: 14px; z-index: 50; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-size: 1.3rem; background: var(--glass); border: 1px solid var(--glass-line); color: #fff; backdrop-filter: blur(8px); }
+.npac-title { white-space: normal; font-size: clamp(1.8rem, 6vw, 4rem) !important; line-height: 1.05; }
+
+.letter-wrap { text-align: center; margin: 0.4rem 0 1rem; }
+.letter-label { text-transform: uppercase; letter-spacing: 3px; font-size: 0.9rem; opacity: 0.6; }
+.big-letter {
+  font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(6rem, 22vw, 13rem); line-height: 1;
+  background: linear-gradient(180deg, var(--yellow), var(--orange) 55%, var(--hot));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.4)); animation: pop-in 0.4s both;
+}
+.cat-chips { display: flex; gap: 0.7rem; flex-wrap: wrap; justify-content: center; max-width: 800px; }
+.cat-chips .chip { font-family: 'Baloo 2'; font-weight: 700; font-size: clamp(1rem, 2.4vw, 1.5rem); padding: 0.45rem 1.1rem; border-radius: 999px; background: var(--glass); border: 1px solid var(--glass-line); }
+.round-foot { display: flex; align-items: center; gap: 1.6rem; margin-top: 1rem; }
+.status-line.stopped { color: var(--hot); font-weight: 800; }
+
+/* scoresheet */
+.sheet-wrap { width: 100%; max-width: 1080px; overflow-x: auto; margin-top: 0.6rem; }
+.sheet { width: 100%; border-collapse: separate; border-spacing: 6px; }
+.sheet th, .sheet td { padding: 0.5rem 0.7rem; border-radius: 12px; }
+.sheet th { font-family: 'Baloo 2'; font-weight: 700; font-size: 0.95rem; color: var(--yellow); text-align: left; background: rgba(0,0,0,0.25); }
+.sheet th.tot, .sheet td.tot { text-align: center; }
+.sheet .pl { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.04); }
+.sheet .pl .avatar { width: 34px; height: 34px; font-size: 1.3rem; }
+.sheet td.cell { font-weight: 600; }
+.sheet td .ans { font-size: 1.05rem; }
+.sheet td .pp { font-size: 0.8rem; opacity: 0.85; margin-left: 0.3rem; }
+.cell.unique { background: rgba(6,214,160,0.2); }
+.cell.dup { background: rgba(255,210,63,0.18); }
+.cell.bad, .cell.empty { background: rgba(255,255,255,0.04); opacity: 0.6; }
+.sheet td.tot { font-family: 'Baloo 2'; font-weight: 800; font-size: 1.3rem; color: var(--yellow); background: rgba(0,0,0,0.25); }

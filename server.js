@@ -21,6 +21,7 @@ import { mountSur } from './sur/mount.js';
 import { mountHil } from './hil/mount.js';
 import { mountTadka } from './tadka/mount.js';
 import { mountBhediya } from './bhediya/mount.js';
+import { mountNpac } from './npac/mount.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 8080;
@@ -43,6 +44,7 @@ mountSur(app, io, { port: PORT });
 mountHil(app, io, { port: PORT });
 mountTadka(app, io, { port: PORT });
 mountBhediya(app, io, { port: PORT });
+mountNpac(app, io, { port: PORT });
 
 // ---- legal pages (clean URLs) ----
 app.get('/privacy', (_q, r) => r.sendFile(join(__dirname, 'privacy.html')));

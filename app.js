@@ -188,8 +188,20 @@ function wolfSVG() {
   return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${GLOW}${r}</svg>`;
 }
 
+// NPAC: a big letter tile beside a ticked-off scoresheet.
+function npacSVG() {
+  let r = `<rect x="20" y="44" width="62" height="62" rx="13" fill="var(--accent)" filter="url(#g)"/>`;
+  r += `<text x="51" y="92" text-anchor="middle" font-family="'Baloo 2',sans-serif" font-weight="800" font-size="44" fill="#06121a">A</text>`;
+  [56, 72, 88, 104].forEach((y, i) => {
+    r += `<rect x="98" y="${y}" width="${[70, 58, 80, 52][i]}" height="7" rx="3.5" fill="rgba(255,255,255,0.22)"/>`;
+    r += `<path d="M182 ${y + 3} l4 5 l9 -12" stroke="var(--accent2)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+  });
+  return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${GLOW}${r}</svg>`;
+}
+
 function artFor(g) {
   switch (g.gfx) {
+    case 'sheet': return npacSVG();
     case 'wolf': return wolfSVG();
     case 'wordboard': return wordBoardSVG();
     case 'bluff': return bluffSVG();
