@@ -87,22 +87,10 @@ body {
 }
 
 /* ---- marquee header ---- */
-/* the hero logo image — its festive backdrop melts into the page on every
-   edge, so it fades away as you scroll toward the games (no hard rectangle) */
-.hero-h1 { margin: 0; line-height: 0; }
-.hero-img {
-  display: block;
-  width: min(100%, 1000px);
-  height: auto;
-  margin: 0.2rem auto 0;
-  -webkit-mask-image: radial-gradient(125% 128% at 50% 43%, #000 60%, transparent 92%);
-  mask-image: radial-gradient(125% 128% at 50% 43%, #000 60%, transparent 92%);
-}
-
 .marquee {
   position: relative; z-index: 2;
   text-align: center;
-  padding: clamp(1.4rem, 4vh, 2.8rem) 1.2rem 1rem;
+  padding: clamp(3rem, 9vh, 6.5rem) 1.4rem 1.2rem;
 }
 /* tempering-pan logo mark */
 .logo {
@@ -148,42 +136,28 @@ body {
 /* the hero wordmark — English letters styled like Devanagari (shirorekha) */
 .deva {
   font-family: 'Khand', system-ui, sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0;
+  letter-spacing: 0.03em;
   font-size: clamp(2.6rem, 11vw, 6.6rem);
-  line-height: 1.0;
+  line-height: 1.04;
   white-space: nowrap;
   display: inline-flex;
-  gap: 0.5em;
+  gap: 0.3em;
   margin: 0;
   filter: drop-shadow(0 3px 2px rgba(35, 5, 0, 0.4));
   animation: sizzle 6s ease-in-out infinite;
   transform-origin: center;
 }
-/* each word hangs from a shirorekha — the Devanagari headline bar — so the
-   Latin letters read as Hindi-style script */
 .deva .word {
   display: inline-block;
-  position: relative;
-  letter-spacing: -0.03em;
   background: linear-gradient(180deg, #ffae2b 0%, #ff6a14 52%, #d81f2b 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-/* the bar overlaps the very top of the caps so the letters hang from it */
-.deva .word::before {
-  content: "";
-  position: absolute;
-  left: -0.03em; right: -0.03em;
-  top: 0.2em;
-  height: 0.14em;
-  border-radius: 0.05em;
-  background: linear-gradient(90deg, #ffae2b, #ff6a14 55%, #d81f2b);
-  box-shadow: 0 1px 8px rgba(216, 31, 43, 0.3);
+  text-shadow: 0 2px 9px rgba(35, 5, 0, 0.4);
 }
 @keyframes sizzle {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.008); }
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50%      { transform: rotate(0.4deg) scale(1.006); }
 }
 
 /* the Latin wordmark — TADKA PLAY */

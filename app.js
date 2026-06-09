@@ -2,9 +2,9 @@ import { SITE, GAMES } from './games.js';
 
 // ---- header text -------------------------------------------------------
 document.getElementById('kicker').textContent = SITE.kicker;
-// the hero wordmark is now an image (#deva removed); keep this resilient
-const devaEl = document.getElementById('deva');
-if (devaEl) devaEl.innerHTML = SITE.hero.split(' ').map((w) => `<span class="word">${w}</span>`).join(' ');
+// each word wrapped so the shirorekha bar can sit per-word (breaks at spaces)
+document.getElementById('deva').innerHTML =
+  SITE.hero.split(' ').map((w) => `<span class="word">${w}</span>`).join(' ');
 document.getElementById('subtitle').textContent = SITE.subtitle;
 document.title = `${SITE.hero} — desi party games`;
 
