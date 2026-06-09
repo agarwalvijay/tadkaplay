@@ -82,6 +82,7 @@ socket.on('kbc:question', ({ q, options, value }) => {
 });
 
 socket.on('kbc:reveal', ({ answer, value }) => {
+  show('play'); // ensure a refresh mid-reveal lands back in the game
   optBtns.forEach((b, i) => {
     b.disabled = true;
     if (i === answer) b.classList.add('correct');

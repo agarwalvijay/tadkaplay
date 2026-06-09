@@ -40,7 +40,9 @@ export function mountTadka(app, io, { port }) {
     const windowMs = g.pack.windowMs;
     g.cur = { id, start: Date.now(), windowMs, taps: new Map() };
     const payload = { id, spice, windowMs, index: id + 1, total: g.pack.cues };
-    g.screen = { event: 'tadka:cue', data: { ...payload, phase: 'play', burn: g.burn, combo: g.combo } };
+    // reconnect snapshot is a stable "you're in play" marker (the cue itself is
+    // transient, so we never store it as the resync screen)
+    g.screen = { event: 'tadka:resume', data: { total: g.pack.cues, index: id + 1, burn: g.burn, combo: g.combo } };
     api.broadcast('tadka:cue', payload);
     g.cueIndex += 1;
     clearTimer(room);
@@ -66,7 +68,7 @@ export function mountTadka(app, io, { port }) {
     }
 
     const result = { id: cur.id, hits, total, burn: g.burn, combo: g.combo, quality };
-    g.screen = { event: 'tadka:cue', data: { id: cur.id, phase: 'between', burn: g.burn, combo: g.combo } };
+    g.screen = { event: 'tadka:resume', data: { total: g.pack.cues, index: g.cueIndex, burn: g.burn, combo: g.combo } };
     api.broadcast('tadka:result', result);
     api.broadcastPlayers();
     g.cur = null;

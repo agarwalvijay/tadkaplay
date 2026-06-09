@@ -92,6 +92,7 @@ $('clueSubmit').onclick = () => {
 
 // --- guess phase ---
 socket.on('andaaza:guess', ({ clue, spectrum }) => {
+  show('play'); // ensure a refresh mid-guess lands back in the game
   setEnds(spectrum);
   if (amClueGiver) {
     $('role').textContent = '⏳ Everyone is guessing…';

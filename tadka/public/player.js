@@ -54,6 +54,8 @@ let cueId = null, windowTimer = null, tapped = false;
 function dimPad() { pad.classList.remove('live'); $('tapLabel').textContent = 'WAIT'; $('tapSpice').textContent = '🍳'; cueId = null; }
 
 socket.on('tadka:start', () => { show('play'); $('tapHead').textContent = 'Get ready… 🍳'; dimPad(); $('tapFb').textContent = ''; });
+// resync after a refresh mid-game → drop straight back onto the play screen
+socket.on('tadka:resume', () => { show('play'); dimPad(); $('tapHead').textContent = 'Wait for it…'; $('tapFb').textContent = ''; });
 
 socket.on('tadka:cue', ({ id, spice, windowMs }) => {
   cueId = id; tapped = false;

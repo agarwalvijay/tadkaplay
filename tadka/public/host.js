@@ -74,6 +74,15 @@ socket.on('tadka:start', ({ pack, leadMs }) => {
   steps.forEach((s, i) => setTimeout(() => { bigFeedback(s, 'fb-ok'); Sound.play(i < 3 ? 'countdown' : 'go'); }, i * each));
 });
 
+// host resync after a refresh mid-game
+socket.on('tadka:resume', ({ total, index, burn, combo }) => {
+  show('play'); cuesTotal = total;
+  for (const k in spices) spices[k].remove(); spices = {};
+  $('wave').textContent = `${index} / ${total}`;
+  $('burnFill').style.height = `${Math.round(burn)}%`;
+  $('combo').textContent = `🔥 Combo ${combo}`;
+});
+
 socket.on('tadka:cue', ({ id, spice, windowMs, index, total }) => {
   $('wave').textContent = `${index} / ${total}`;
   const el = document.createElement('div'); el.className = 'spice';
