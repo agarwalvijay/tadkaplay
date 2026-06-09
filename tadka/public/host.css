@@ -1,0 +1,45 @@
+/* Tadka Tashan host */
+.mute-btn { position: fixed; top: 14px; right: 14px; z-index: 50; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-size: 1.3rem; background: var(--glass); border: 1px solid var(--glass-line); color: #fff; backdrop-filter: blur(8px); }
+
+.tadka-hud { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 760px; font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(1.2rem, 3vw, 2rem); }
+.tadka-hud .combo { color: var(--yellow); transition: transform 0.12s ease; }
+.tadka-hud .combo.bump { transform: scale(1.25); }
+
+.stage-row { display: flex; align-items: stretch; gap: 1.2rem; margin-top: 0.6rem; }
+.burn-col { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.burn-gauge { position: relative; width: 34px; flex: 1; min-height: 300px; border-radius: 999px; background: rgba(0,0,0,0.35); border: 1px solid var(--glass-line); overflow: hidden; }
+.burn-fill { position: absolute; left: 0; right: 0; bottom: 0; height: 0%; border-radius: 999px; background: linear-gradient(0deg, #ffd23f, #ff7a18 55%, #e63946); transition: height 0.25s ease; }
+.burn-label { font-family: 'Baloo 2'; font-weight: 700; font-size: 0.9rem; opacity: 0.85; }
+
+.pan-stage { position: relative; width: min(70vw, 520px); height: min(56vh, 460px); }
+.pan {
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  font-size: clamp(5rem, 16vw, 9rem); line-height: 1;
+  filter: drop-shadow(0 0 0 transparent); transition: filter 0.15s ease, transform 0.1s ease;
+}
+.pan.sizzle { filter: drop-shadow(0 -6px 22px var(--yellow)); transform: translateX(-50%) translateY(-4px) scale(1.04); }
+.pan.burnt { filter: drop-shadow(0 0 26px #e63946) saturate(1.4); }
+.smoke { position: absolute; bottom: 14%; left: 50%; transform: translateX(-50%); width: 60%; height: 50%; pointer-events: none; opacity: 0; background: radial-gradient(circle at 50% 90%, rgba(80,80,80,0.5), transparent 70%); transition: opacity 0.4s; }
+
+.spice {
+  position: absolute; top: 2%; left: 50%; transform: translateX(-50%);
+  font-size: clamp(2.4rem, 7vw, 4rem); line-height: 1; z-index: 3;
+  transition: top linear, opacity 0.2s;
+  display: grid; place-items: center;
+}
+.spice .ring { position: absolute; width: 2.4em; height: 2.4em; border-radius: 50%; border: 4px solid rgba(255,255,255,0.5); transform: scale(2.2); transition: transform linear; }
+.spice.land { opacity: 0; transform: translateX(-50%) scale(0.4); }
+.spice.miss { opacity: 0; filter: grayscale(1); }
+
+.cue-feedback {
+  position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%);
+  font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(1.8rem, 6vw, 3.4rem);
+  z-index: 5; pointer-events: none; opacity: 0;
+}
+.cue-feedback.show { animation: fb 0.7s ease both; }
+@keyframes fb { 0% { opacity: 0; transform: translate(-50%, -30%) scale(0.6); } 25% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } 100% { opacity: 0; transform: translate(-50%, -70%) scale(1); } }
+.fb-perfect { color: var(--lime); }
+.fb-ok { color: var(--yellow); }
+.fb-bad { color: var(--hot); }
+
+.big-result { font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(1.6rem, 5vw, 3rem); text-align: center; margin: 0.4rem 0 1rem; }

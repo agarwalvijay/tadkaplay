@@ -165,6 +165,15 @@ function hilSVG() {
   return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${GLOW}${r}</svg>`;
 }
 
+// Tadka Tashan: spices dropping into a sizzling kadhai.
+function panSVG() {
+  let r = `<ellipse cx="100" cy="126" rx="46" ry="10" fill="var(--accent)" opacity="0.32" filter="url(#g)"/>`;
+  r += `<text x="100" y="122" text-anchor="middle" font-size="60">🍳</text>`;
+  [['🌶️', 64, 54], ['🟡', 100, 42], ['🧄', 136, 56]].forEach(([e, x, y]) => { r += `<text x="${x}" y="${y}" text-anchor="middle" font-size="26">${e}</text>`; });
+  r += `<text x="100" y="86" text-anchor="middle" font-size="20">✨</text>`;
+  return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${GLOW}${r}</svg>`;
+}
+
 function artFor(g) {
   switch (g.gfx) {
     case 'wordboard': return wordBoardSVG();
@@ -175,6 +184,7 @@ function artFor(g) {
     case 'fill': return fillSVG();
     case 'sur': return surSVG();
     case 'tilt': return hilSVG();
+    case 'pan': return panSVG();
     default: return patternSVG();
   }
 }
