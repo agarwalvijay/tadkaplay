@@ -1,0 +1,22 @@
+/* Bhediya host */
+.mute-btn { position: fixed; top: 14px; right: 14px; z-index: 50; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-size: 1.3rem; background: var(--glass); border: 1px solid var(--glass-line); color: #fff; backdrop-filter: blur(8px); }
+
+.cat-label { text-transform: uppercase; letter-spacing: 3px; font-size: 0.9rem; opacity: 0.6; }
+.category {
+  font-family: 'Baloo 2'; font-weight: 800; font-size: clamp(2.4rem, 8vw, 5rem);
+  background: linear-gradient(92deg, var(--yellow), var(--orange) 55%, var(--hot));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+.opt .clue-text { font-family: 'Baloo 2'; font-weight: 800; font-size: 1.3rem; }
+.opt .who { font-size: 0.9rem; opacity: 0.8; }
+.opt.is-wolf { box-shadow: 0 0 0 3px var(--hot) inset; background: rgba(230,57,70,0.16); }
+.opt .votes { font-family: 'Baloo 2'; font-weight: 800; color: var(--yellow); }
+.opt .wolf-tag { font-size: 1.4rem; }
+
+.reveal-head { font-size: clamp(2rem, 6vw, 3.6rem); text-align: center; margin-bottom: 0.4rem; }
+.reveal-head.caught { color: var(--lime); }
+.reveal-head.escaped { color: var(--hot); }
+.reveal-word { text-align: center; font-size: 1.3rem; opacity: 0.9; margin-bottom: 1rem; }
+.reveal-word b { color: var(--yellow); font-family: 'Baloo 2'; }
+.scoreboard.mini { max-width: 560px; margin-top: 1rem; }

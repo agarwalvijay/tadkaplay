@@ -174,8 +174,23 @@ function panSVG() {
   return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${GLOW}${r}</svg>`;
 }
 
+// Bhediya: suspects in a line-up, the wolf spotted under a magnifier.
+function wolfSVG() {
+  let r = '';
+  const xs = [52, 100, 148], faces = ['🙂', '🐺', '🙃'];
+  xs.forEach((x, i) => {
+    const wolf = i === 1;
+    r += `<circle cx="${x}" cy="72" r="24" fill="${wolf ? 'var(--accent)' : 'rgba(255,255,255,0.08)'}" stroke="${wolf ? 'var(--accent)' : 'rgba(255,255,255,0.18)'}" stroke-width="2" ${wolf ? 'filter="url(#g)"' : ''}/>`;
+    r += `<text x="${x}" y="82" text-anchor="middle" font-size="26">${faces[i]}</text>`;
+  });
+  r += `<circle cx="118" cy="92" r="17" fill="none" stroke="#fff" stroke-width="4" opacity="0.9"/>`;
+  r += `<line x1="131" y1="105" x2="150" y2="124" stroke="#fff" stroke-width="5" stroke-linecap="round"/>`;
+  return `<svg class="art-gfx" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">${GLOW}${r}</svg>`;
+}
+
 function artFor(g) {
   switch (g.gfx) {
+    case 'wolf': return wolfSVG();
     case 'wordboard': return wordBoardSVG();
     case 'bluff': return bluffSVG();
     case 'doodle': return doodleSVG();
