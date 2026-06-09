@@ -87,27 +87,22 @@ body {
 }
 
 /* ---- marquee header ---- */
-/* warm festive glow behind the header — strong at the top, fades out as you
-   scroll down toward the games (no layout space taken) */
-.hero-glow {
-  position: absolute; top: 0; left: 0; right: 0;
-  height: min(720px, 86vh); z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(38% 30% at 20% 14%, rgba(255, 176, 0, 0.32), transparent 70%),
-    radial-gradient(34% 28% at 80% 12%, rgba(255, 122, 24, 0.28), transparent 70%),
-    radial-gradient(24% 20% at 50% 4%, rgba(255, 207, 63, 0.30), transparent 72%),
-    radial-gradient(30% 26% at 72% 30%, rgba(255, 59, 48, 0.16), transparent 70%),
-    radial-gradient(26% 24% at 26% 30%, rgba(155, 93, 229, 0.14), transparent 72%),
-    radial-gradient(26% 22% at 90% 34%, rgba(6, 214, 160, 0.10), transparent 72%);
-  filter: blur(8px) saturate(1.08);
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 36%, transparent 92%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 36%, transparent 92%);
+/* the hero logo image — its festive backdrop melts into the page on every
+   edge, so it fades away as you scroll toward the games (no hard rectangle) */
+.hero-h1 { margin: 0; line-height: 0; }
+.hero-img {
+  display: block;
+  width: min(100%, 1000px);
+  height: auto;
+  margin: 0.2rem auto 0;
+  -webkit-mask-image: radial-gradient(125% 128% at 50% 43%, #000 60%, transparent 92%);
+  mask-image: radial-gradient(125% 128% at 50% 43%, #000 60%, transparent 92%);
 }
 
 .marquee {
   position: relative; z-index: 2;
   text-align: center;
-  padding: clamp(3rem, 9vh, 6.5rem) 1.4rem 1.2rem;
+  padding: clamp(1.4rem, 4vh, 2.8rem) 1.2rem 1rem;
 }
 /* tempering-pan logo mark */
 .logo {

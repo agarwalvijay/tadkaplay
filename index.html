@@ -16,54 +16,10 @@
   <div class="grid-floor" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
   <div class="floaters" id="floaters" aria-hidden="true"></div>
-  <!-- warm festive glow behind the header; fades out as you scroll down -->
-  <div class="hero-glow" aria-hidden="true"></div>
 
   <header class="marquee">
     <p class="kicker" id="kicker"></p>
-    <div class="brandrow">
-    <!-- tempering-pan logo mark -->
-    <svg class="logo" viewBox="0 0 200 150" role="img" aria-label="Tadka Play">
-      <defs>
-        <linearGradient id="oil" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#ffd24a" />
-          <stop offset="1" stop-color="#ff8c1a" />
-        </linearGradient>
-        <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#6b636f" />
-          <stop offset="1" stop-color="#2a262e" />
-        </linearGradient>
-      </defs>
-
-      <!-- pan + handle -->
-      <g class="pan">
-        <path d="M116 84 L184 46" stroke="url(#metal)" stroke-width="12" stroke-linecap="round" />
-        <circle cx="186" cy="44" r="7" fill="url(#metal)" />
-        <path d="M116 81 L182 45" stroke="#9a929f" stroke-width="3.2" stroke-linecap="round" opacity=".65" />
-        <ellipse cx="76" cy="98" rx="50" ry="17" fill="url(#metal)" />
-        <ellipse cx="76" cy="98" rx="50" ry="17" fill="none" stroke="#9a929f" stroke-width="2" opacity=".55" />
-        <ellipse cx="76" cy="98" rx="40" ry="11" fill="url(#oil)" />
-        <ellipse cx="64" cy="94" rx="12" ry="3.4" fill="#fff" opacity=".45" />
-        <circle cx="70" cy="100" r="2.2" fill="#b5462a" />
-        <circle cx="86" cy="96" r="1.8" fill="#7a3b1f" />
-        <circle cx="90" cy="100" r="2" fill="#e63946" />
-        <circle cx="60" cy="97" r="1.6" fill="#ffcf3f" />
-      </g>
-
-      <!-- popping seeds / sparks -->
-      <g class="seeds">
-        <ellipse class="seed" cx="58" cy="74" rx="2.6" ry="3.4" fill="#ff3b30" style="animation-delay:0s" />
-        <ellipse class="seed" cx="74" cy="64" rx="2.4" ry="3.2" fill="#ffcf3f" style="animation-delay:.35s" />
-        <ellipse class="seed" cx="90" cy="70" rx="2.6" ry="3.4" fill="#ff7a18" style="animation-delay:.7s" />
-        <ellipse class="seed" cx="66" cy="56" rx="2.2" ry="3" fill="#8a4b2a" style="animation-delay:1.05s" />
-        <ellipse class="seed" cx="98" cy="60" rx="2.4" ry="3.2" fill="#ff3b30" style="animation-delay:1.4s" />
-        <g class="seed" style="animation-delay:.9s">
-          <path d="M108 52 v6 M105 55 h6" stroke="#ffd24a" stroke-width="1.6" stroke-linecap="round" />
-        </g>
-      </g>
-    </svg>
-      <h1 class="deva" id="deva"></h1>
-    </div>
+    <h1 class="hero-h1"><img class="hero-img" src="/hero.jpg" alt="Tadka Play" /></h1>
     <p class="subtitle" id="subtitle"></p>
   </header>
 
