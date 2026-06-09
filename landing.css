@@ -87,6 +87,23 @@ body {
 }
 
 /* ---- marquee header ---- */
+/* warm festive glow behind the header — strong at the top, fades out as you
+   scroll down toward the games (no layout space taken) */
+.hero-glow {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: min(720px, 86vh); z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(38% 30% at 20% 14%, rgba(255, 176, 0, 0.32), transparent 70%),
+    radial-gradient(34% 28% at 80% 12%, rgba(255, 122, 24, 0.28), transparent 70%),
+    radial-gradient(24% 20% at 50% 4%, rgba(255, 207, 63, 0.30), transparent 72%),
+    radial-gradient(30% 26% at 72% 30%, rgba(255, 59, 48, 0.16), transparent 70%),
+    radial-gradient(26% 24% at 26% 30%, rgba(155, 93, 229, 0.14), transparent 72%),
+    radial-gradient(26% 22% at 90% 34%, rgba(6, 214, 160, 0.10), transparent 72%);
+  filter: blur(8px) saturate(1.08);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 36%, transparent 92%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 36%, transparent 92%);
+}
+
 .marquee {
   position: relative; z-index: 2;
   text-align: center;
@@ -154,20 +171,20 @@ body {
 .deva .word {
   display: inline-block;
   position: relative;
-  padding-top: 0.2em;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   background: linear-gradient(180deg, #ffae2b 0%, #ff6a14 52%, #d81f2b 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
+/* the bar overlaps the very top of the caps so the letters hang from it */
 .deva .word::before {
   content: "";
   position: absolute;
-  left: -0.02em; right: -0.02em;
-  top: 0.05em;
-  height: 0.16em;
-  border-radius: 0.09em;
+  left: -0.03em; right: -0.03em;
+  top: 0.2em;
+  height: 0.14em;
+  border-radius: 0.05em;
   background: linear-gradient(90deg, #ffae2b, #ff6a14 55%, #d81f2b);
-  box-shadow: 0 2px 10px rgba(216, 31, 43, 0.35);
+  box-shadow: 0 1px 8px rgba(216, 31, 43, 0.3);
 }
 @keyframes sizzle {
   0%, 100% { transform: scale(1); }
